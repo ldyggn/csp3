@@ -1,6 +1,6 @@
 import Banner from '../components/Banner';
 import Highlights from '../components/Highlights';
-// import FeaturedProducts from '../components/FeaturedProducts';
+import FeaturedProducts from '../components/FeaturedProducts';
 import BannerImage from '../images/Banner.svg';
 
 export default function Home() {
@@ -16,7 +16,7 @@ export default function Home() {
     return (
         <>
             <Banner data={data} image={imageUrl} />
-            {/* <FeaturedProducts/> */}
+            <FeaturedProducts/>
             <Highlights />
         </>
     );

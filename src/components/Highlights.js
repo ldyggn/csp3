@@ -36,7 +36,7 @@ export default function Highlights(){
                     <h2>Be Part of Our Community</h2>
                 </Card.Title>
                 <Card.Text>
-                Become a valued member of our community and unlock exclusive beauty benefits! 
+                Become a valued member of our community and unlock exclusive beauty benefits! Big discount, free shipping, and more!
                 </Card.Text>
                 </Card.Body>
             </Card>

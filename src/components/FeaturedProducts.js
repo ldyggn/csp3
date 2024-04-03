@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Carousel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import browowImage from '../images/browow.jpeg';
-import matteBlushImage from '../images/matteblush.jpeg';
-import moisturizingLipBalmImage from '../images/moisturizinglipbalm.JPG';
-import puffLipstickImage from '../images/pufflipstick.JPG';
-import matteLipstickImage from '../images/mattelipstick.JPG';
-import creamyAllOverPaintImage from '../images/creamyalloverpaint.JPG';
-import volumizingMascaraImage from '../images/volumizingmascara.JPG';
+
+const imageMap = {
+    'Browow': 'https://blkcosmetics.com.ph/cdn/shop/files/BrowSculptingPencilDuo_NaturalBrown_f1eb7405-701c-4a1e-8126-70eaac9d7038_720x.png?v=1691670903',
+    'Matte Blush': 'https://blkcosmetics.com.ph/cdn/shop/files/PowderPalette_BlushChampagneCaramel_720x.png?v=1691672016',
+    'Moisturizing Lipbalm': 'https://blkcosmetics.com.ph/cdn/shop/files/MLBB1_720x.png?v=1698320717',
+    'Puff Lipstick': 'https://blkcosmetics.com.ph/cdn/shop/files/airy-matte-tint-websiPNGite-thumbnail-Artboard-1_720x.png?v=1703825659',
+    'Matte Lipstick': 'https://blkcosmetics.com.ph/cdn/shop/files/PillowMatte_Flirt_720x.png?v=1701331855',
+    'Creamy All Over Paint': 'https://blkcosmetics.com.ph/cdn/shop/files/Mood_0_island_rose_720x.jpg?v=1710663765',
+    'Volumizing Mascara': 'https://blkcosmetics.com.ph/cdn/shop/files/VolumeLashExtension_720x.jpg?v=1688361307',
+    'Eyeshadow Pallette': 'https://blkcosmetics.com.ph/cdn/shop/files/EyePalette_Nude_720x.png?v=1691671219'
+};
 
 export default function FeaturedProducts() {
     const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -40,44 +44,21 @@ export default function FeaturedProducts() {
 
     return (
         <>
-            <h2 className="text-center">Featured Products</h2>
-            <Carousel className="justify-content-center">
+            <h2 className="text-center my-3">Our Best Sellers!</h2>
+            <Carousel>
                 {featuredProducts.map((product, index) => (
                     <Carousel.Item key={index}>
-                        <img
-                            className="d-block w-100"
-                            src={getImageForProduct(product)}
-                            alt={product.name}
-                        />
-                        <Carousel.Caption>
-                            <h3>{product.name}</h3>
-                            <p>{product.description}</p>
-                            <Link className="btn btn-primary" to={`/products/${product._id}`}>Details</Link>
-                        </Carousel.Caption>
+                        <Link to={`/products/${product._id}`}>
+                            <img
+                                className="d-block w-100"
+                                src={imageMap[product.name]}
+                                alt={product.name}
+                                style={{ maxHeight: '300px', objectFit: 'contain' }} 
+                            />
+                        </Link>
                     </Carousel.Item>
                 ))}
             </Carousel>
         </>
     );
-}
-
-function getImageForProduct(product) {
-    switch (product.imageName) {
-        case 'Browow':
-            return browowImage;
-        case 'Matte Blush':
-            return matteBlushImage;
-        case 'Moisturizing Lipbalm':
-            return moisturizingLipBalmImage;
-        case 'Puff Lipstick':
-            return puffLipstickImage;
-        case 'Matte Lipstick':
-            return matteLipstickImage;
-        case 'Creamy All Over Paint':
-            return creamyAllOverPaintImage;
-        case 'Volumizing Mascara':
-            return volumizingMascaraImage;
-        default:
-            return null;
-    }
 }
