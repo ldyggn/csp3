@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
-const UpdateProfile = () => {
+const UpdateProfile = ({ textColor }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [mobileNo, setMobileNo] = useState('');
@@ -46,7 +46,7 @@ const UpdateProfile = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{ color: textColor }}>
       <h2>Update Profile</h2>
       <form onSubmit={handleUpdateProfile}>
         <div className="mb-3">

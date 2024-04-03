@@ -1,94 +1,78 @@
 import React, { useState } from 'react';
 import ProductCard from './ProductCard';
 
-const ProductSearch = () => {
+const ProductSearch = ({ products, onSearch }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [minPrice, setMinPrice] = useState(''); 
-  const [maxPrice, setMaxPrice] = useState(''); 
   const [searchResults, setSearchResults] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+  const [error, setError] = useState(null);
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
-  const searchByName = async () => {
+  const searchByName = (query) => {
     try {
-      const response = await fetch('http://ec2-18-217-154-136.us-east-2.compute.amazonaws.com/b5/products/searchByName', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ productName: searchQuery })
-      });
-      const data = await response.json();
-      setSearchResults(data);
+      const filtered = products ? products.filter(product =>
+        product.name.toLowerCase().includes(query.toLowerCase())
+      ) : [];
+      setSearchResults(filtered);
+      setShowResults(true);
+      setError(null);
     } catch (error) {
       console.error('Error searching for product by name:', error);
+      setError(error);
+    }
+  };
+  
+  const handleSearch = () => {
+    searchByName(searchQuery);
+    setFilteredProducts(searchResults);
+    onSearch(searchQuery);
+};
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
     }
   };
 
-  const searchByPriceRange = async () => {
-    try {
-      const response = await fetch('http://ec2-18-217-154-136.us-east-2.compute.amazonaws.com/b5/products/searchByPrice', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ minPrice, maxPrice })
-      });
-      const data = await response.json();
-      setSearchResults(data);
-    } catch (error) {
-      console.error('Error searching for product by price range:', error);
+  const handleInputChange = (event) => {
+    const { value } = event.target;
+    setSearchQuery(value);
+    if (value === '') {
+      setShowResults(false);
+      setSearchResults([]);
     }
-  };
-
-  const handleSearch = async () => {
-    if (searchQuery) {
-      await searchByName();
-    }
-    await searchByPriceRange();
   };
 
   return (
-    <div>
-      <h2 className='mt-3'>Product Search</h2>
-      <div className="form-group">
-        <label htmlFor="productName">Product Name:</label>
-        <input
-          type="text"
-          id="productName"
-          className="form-control"
-          value={searchQuery}
-          onChange={event => setSearchQuery(event.target.value)}
-        />
+    <div style={{ marginTop: '20px' }}>
+      <div className={`form-group ${showResults ? 'has-results' : ''}`}>
+        <div className="input-group" style={{ width: '300px' }}>
+          <input
+            type="text"
+            className="form-control search-bar"
+            placeholder="Search"
+            value={searchQuery}
+            onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
+          />
+          <div className="input-group-append">
+            <button className="btn btn-primary" type="button" onClick={handleSearch}>
+              Search
+            </button>
+          </div>
+        </div>
       </div>
-      <div className="form-group mt-3">
-      <h2>Search Product By Price Range</h2>
-        <label htmlFor="minPrice">Min Price:</label>
-        <input
-          type="number"
-          id="minPrice"
-          className="form-control mb-3"
-          value={minPrice}
-          onChange={event => setMinPrice(event.target.value)}
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="maxPrice">Max Price:</label>
-        <input
-          type="number"
-          id="maxPrice"
-          className="form-control"
-          value={maxPrice}
-          onChange={event => setMaxPrice(event.target.value)}
-        />
-      </div>
-      <button className="btn btn-primary my-3" onClick={handleSearch}>
-        Search
-      </button>
-      <h3>Search Results:</h3>
-      <ul>
+      {error && <div>Error: {error.message}</div>}
+      {showResults && searchResults.length > 0 && (
+  <div style={{ marginTop: '20px' }}>
+    <h5>Search Results:</h5>
+    <div className="product-cards-container">
       {searchResults.map(product => (
-          <ProductCard productProp={product} key={product._id} />
-        ))}
-      </ul>
+        <ProductCard productProp={product} key={product._id} />
+      ))}
+    </div>
+  </div>
+)}
     </div>
   );
 };

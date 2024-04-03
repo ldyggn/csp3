@@ -59,12 +59,12 @@ export default function Account() {
                 <Row className="mt-5">
                     <Col>
                         <div className="reset-password-form border rounded p-4">
-                            <ResetPassword />
+                            <ResetPassword textColor="#f79191"/>
                         </div>
                     </Col>
                     <Col>
                         <div className="update-profile-form border rounded p-4">
-                            <UpdateProfile />
+                            <UpdateProfile textColor="#f79191"/>
                         </div>
                     </Col>
                 </Row>

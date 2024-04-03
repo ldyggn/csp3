@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ResetPassword = () => {
+const ResetPassword = ({ textColor }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -39,7 +39,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{ color: textColor }}>
       <h2>Reset Password</h2>
       <form onSubmit={handleResetPassword}>
         <div className="mb-3">
