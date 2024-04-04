@@ -9,6 +9,8 @@ import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Error from './pages/Error';
 import Account from './pages/Account';
+import Order from './pages/Order';
+import Cart from './pages/Cart';
 import { Container } from 'react-bootstrap';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Route, Routes } from 'react-router-dom';
@@ -68,6 +70,8 @@ function App() {
                   <Route path="/logout" element={<Logout/>} />
                   <Route path="/addProduct" element={<AddProduct/>} />
                   <Route path="/account" element={<Account/>} />
+                  <Route path="/cart" element={<Cart />} /> 
+                  <Route path="/order" element={<Order />} /> 
                   <Route path="*" element={<Error/>} />
               </Routes>
           </Container>

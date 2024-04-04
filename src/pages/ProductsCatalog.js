@@ -3,6 +3,8 @@ import AdminView from '../components/AdminView';
 import UserContext from '../UserContext';
 import ProductCard from '../components/ProductCard';
 import ProductSearch from '../components/ProductSearch';
+import { AiOutlineShoppingCart } from 'react-icons/ai'; 
+import { Link } from 'react-router-dom'; 
 
 export default function ProductsCatalog() {
     const { user } = useContext(UserContext);
@@ -54,11 +56,20 @@ export default function ProductsCatalog() {
 
     return (
         <div>
-            {!user.isAdmin && (
-                <ProductSearch searchResults={filteredProducts} onSearch={handleSearch} />
-            )}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <div>
+                    {!user.isAdmin && (
+                        <ProductSearch searchResults={filteredProducts} onSearch={handleSearch} />
+                    )}
+                </div>
+                <div>
+                    <Link to="/cart" style={{ fontSize: '24px', color: 'black' }}>
+                        <AiOutlineShoppingCart />
+                    </Link>
+                </div>
+            </div>
             {error && <div>Error: {error.message}</div>}
-            <div className="products-container" style={{ marginTop: '20px', display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+            <div className="products-container" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
                 {user.isAdmin ? (
                     <AdminView productsData={filteredProducts} fetchData={fetchData} />
                 ) : (

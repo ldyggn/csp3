@@ -17,8 +17,8 @@ export default function AppNavbar() {
         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link as={NavLink} to="/" exact>Home</Nav.Link>
-            <Nav.Link as={NavLink} to="/products" exact>Products</Nav.Link>
+          <Nav.Link as={NavLink} to="/" exact="true">Home</Nav.Link>
+          <Nav.Link as={NavLink} to="/products" exact="true">Products</Nav.Link>
             {(user.id !== null) ?
               user.isAdmin ?
               <>
@@ -27,13 +27,13 @@ export default function AppNavbar() {
               </>
               :
               <>
-                <Nav.Link as={NavLink} to="/account" exact>Account</Nav.Link>
-                <Nav.Link as={NavLink} to="/logout" exact>Logout</Nav.Link>
+                <Nav.Link as={NavLink} to="/account" exact="true">Account</Nav.Link>
+                <Nav.Link as={NavLink} to="/logout" exact="true">Logout</Nav.Link>
               </>
               :
               <>
-                <Nav.Link as={NavLink} to="/login" exact>Login</Nav.Link>
-                <Nav.Link as={NavLink} to="/register" exact>Register</Nav.Link>
+                <Nav.Link as={NavLink} to="/login" exact="true">Login</Nav.Link>
+                <Nav.Link as={NavLink} to="/register" exact="true">Register</Nav.Link>
               </>
             }
           </Nav>

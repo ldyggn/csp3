@@ -1,99 +1,119 @@
 import { useState, useEffect, useContext } from 'react';
-import { Container, Card, Button, Row, Col } from 'react-bootstrap';
+import { Container, Card, Button, Row, Col, Form } from 'react-bootstrap';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import UserContext from '../UserContext';
+import Swal from 'sweetalert2';
+
+const imageMap = {
+    'Browow': 'https://blkcosmetics.com.ph/cdn/shop/files/BrowSculptingPencilDuo_NaturalBrown_f1eb7405-701c-4a1e-8126-70eaac9d7038_720x.png?v=1691670903',
+    'Matte Blush': 'https://blkcosmetics.com.ph/cdn/shop/files/PowderPalette_BlushChampagneCaramel_720x.png?v=1691672016',
+    'Moisturizing Lipbalm': 'https://blkcosmetics.com.ph/cdn/shop/files/MLBB1_720x.png?v=1698320717',
+    'Puff Lipstick': 'https://blkcosmetics.com.ph/cdn/shop/files/airy-matte-tint-websiPNGite-thumbnail-Artboard-1_720x.png?v=1703825659',
+    'Matte Lipstick': 'https://blkcosmetics.com.ph/cdn/shop/files/PillowMatte_Flirt_720x.png?v=1701331855',
+    'Blush Rush': 'https://blkcosmetics.com.ph/cdn/shop/files/Mood_0_island_rose_720x.jpg?v=1710663765',
+    'Volumizing Mascara': 'https://blkcosmetics.com.ph/cdn/shop/files/VolumeLashExtension_720x.jpg?v=1688361307',
+    'Eyeshadow Pallette': 'https://blkcosmetics.com.ph/cdn/shop/files/EyePalette_Nude_720x.png?v=1691671219'
+};
 
 export default function ProductView() {
+    const { user } = useContext(UserContext);
+    const { productId } = useParams();
+    const navigate = useNavigate();
 
-	const { user } = useContext(UserContext);
-	
-	const { productId } = useParams()
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
+    const [price, setPrice] = useState(0);
+    const [quantity, setQuantity] = useState(1); 
+    const [cart, setCart] = useState([]);
 
-	const navigate = useNavigate()
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_API_URL}/products/${productId}`)
+            .then(res => res.json())
+            .then(data => {
+                setName(data.product.name);
+                setDescription(data.product.description);
+                setPrice(data.product.price);
+            });
 
-	const [name, setName] = useState("")
-	const [description, setDescription] = useState("")
-	const [price, setPrice] = useState(0)
+    }, [productId]);
 
-	const addToCart = (productId) => {
-		fetch(`http://ec2-18-217-154-136.us-east-2.compute.amazonaws.com/b5/carts/add-to-cart`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${ localStorage.getItem('token')}`
-			},
-			body: JSON.stringify({
-				productsAdded: [ {productId} ],
-				totalPrice: price
-			})
-		})
-		.then(res => res.json())
-		.then(data => {
+    const addToCart = () => {
+        fetch(`${process.env.REACT_APP_API_URL}/carts/add-to-cart`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                productId,
+                quantity
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.message === 'Product added to cart successfully') {
+                    setCart(data.cart.cartItems);
+                    navigate("/cart");
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Product added to cart successfully!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to add product to cart. Please try again later.',
+                        confirmButtonText: 'OK'
+                    });
+                    console.error("Failed to add product to cart:", data.error);
+                }
+            })
+            .catch(err => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to add product to cart. Please try again later.',
+                    confirmButtonText: 'OK'
+                });
+                console.error("Error adding product to cart:", err);
+            });
+    };
+    
+    const imagePath = imageMap[name] || ''; 
 
-			console.log(data.message);
-
-			if (data.error === 'Admin is forbidden') {
-				Swal.fire({
-					title: "Admin add to cart error",
-					icon: 'error',
-					text: "You are an administrator you may not add to cart."
-				})
-			} else if (data.message === 'Product added to cart successfully') {
-				Swal.fire({
-					title: "Successfully added product",
-					icon: 'success',
-					text: "You have successfully added this product."
-				})
-
-				navigate("/products");
-			} else {
-
-				Swal.fire({
-					title: "Something went wrong",
-					icon: "error",
-					text: "Please try again."
-				})
-			}
-		});
-	};
-
-	useEffect(()=> {
-		console.log(productId);
-
-		fetch(`${process.env.REACT_APP_API_URL }/products/${productId}`)
-		.then(res => res.json())
-		.then(data => {
-			console.log(data)
-
-			setName(data.product.name);
-			setDescription(data.product.description);
-			setPrice(data.product.price);
-		});
-
-	}, [productId]);
-
-	return (
-		<Container className="mt-5">
-			<Row>
-				<Col lg={{ span: 6, offset: 3 }}>
-					<Card>
-						<Card.Body className="text-center">
-							<Card.Title>{name}</Card.Title>
-							<Card.Subtitle>Description:</Card.Subtitle>
-							<Card.Text>{description}</Card.Text>
-							<Card.Subtitle>Price:</Card.Subtitle>
-							<Card.Text>PhP {price}</Card.Text>
-							{ user.id !== null ?
-							  <Button variant="primary" onClick={() => addToCart(productId)}>Add to Cart</Button>
-							  :
-
-							  <Link className="btn btn-danger btn-block" to="/login">Log in to shop</Link>
-							}
-						</Card.Body>		
-					</Card>
-				</Col>
-			</Row>
-		</Container>
-	)
+    return (
+            <Container className="mt-5">
+                <Row className="justify-content-center">
+                    <Col lg={6} className="d-flex justify-content-center">
+                        <Card className="product-card text-center">
+                            <div className="product-card-image-container">
+                                <Card.Img variant="top" src={imagePath} alt={name} className="product-card-image" />
+                            </div>
+                            <Card.Body>
+                                <Card.Title style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{name}</Card.Title>
+                                <Card.Text style={{ marginBottom: '1rem' }}>{description}</Card.Text>
+                                <Card.Text style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>₱ {price}</Card.Text>
+                                <Form.Group>
+                                    <Form.Label>Quantity:</Form.Label>
+                                    <Form.Control 
+                                        type="number" 
+                                        min="1" 
+                                        value={quantity} 
+                                        onChange={(e) => setQuantity(parseInt(e.target.value))}
+                                    />
+                                </Form.Group>
+                                {user.id !== null ?
+                                    <Button variant="primary" onClick={addToCart} className="my-3 add-to-cart-button">Add to Cart</Button>
+                                    :
+                                    <Link className="btn btn-danger btn-block my-3" to="/login">Log in to shop</Link>
+                                }
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
+    );
 }

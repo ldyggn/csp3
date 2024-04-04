@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import ProductCard from './ProductCard';
+import { AiOutlineSearch } from 'react-icons/ai'; // Import search icon
 
 const ProductSearch = ({ products, onSearch }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [error, setError] = useState(null);
-  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const searchByName = (query) => {
     try {
@@ -24,9 +24,8 @@ const ProductSearch = ({ products, onSearch }) => {
   
   const handleSearch = () => {
     searchByName(searchQuery);
-    setFilteredProducts(searchResults);
     onSearch(searchQuery);
-};
+  };
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -57,22 +56,22 @@ const ProductSearch = ({ products, onSearch }) => {
           />
           <div className="input-group-append">
             <button className="btn btn-primary" type="button" onClick={handleSearch}>
-              Search
+              <AiOutlineSearch />
             </button>
           </div>
         </div>
       </div>
       {error && <div>Error: {error.message}</div>}
       {showResults && searchResults.length > 0 && (
-  <div style={{ marginTop: '20px' }}>
-    <h5>Search Results:</h5>
-    <div className="product-cards-container">
-      {searchResults.map(product => (
-        <ProductCard productProp={product} key={product._id} />
-      ))}
-    </div>
-  </div>
-)}
+        <div style={{ marginTop: '20px' }}>
+          <h5>Search Results:</h5>
+          <div className="product-cards-container">
+            {searchResults.map(product => (
+              <ProductCard productProp={product} key={product._id} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
