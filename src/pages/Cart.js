@@ -27,23 +27,37 @@ function Cart() {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data.cart.cartItems);
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Failed to fetch cart data');
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (data.cart && data.cart.cartItems && Array.isArray(data.cart.cartItems)) {
                 const updatedCart = data.cart.cartItems.map(item => ({
-                    ...item,
-                    subtotal: item.price * item.quantity 
+                    productId: item.productId ? item.productId._id : null,
+                    name: item.productId ? item.productId.name : 'Product Name Unavailable',
+                    price: item.productId ? item.productId.price : 0,
+                    quantity: item.quantity,
+                    subtotal: item.subtotal
                 }));
                 setCart(updatedCart);
-            })
-            .catch(err => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Failed to fetch cart data.'
-                });
+            } else {
+                throw new Error('Invalid cart data format');
+            }
+        })
+        .catch(err => {
+            console.error('Error fetching cart data:', err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to fetch cart data.'
             });
+        });
     };
+    
+    
     
     
     const handleUpdateQuantity = (productId, newQuantity) => {
@@ -106,33 +120,33 @@ function Cart() {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         })
-            .then(res => res.json())
-            .then(data => {
-                if (data.message === 'Item removed from cart successfully') {
-                    const updatedCart = cart.filter(item => item.productId !== productId);
-                    setCart(updatedCart);
-                } else if (data.error === 'Item not found in cart') {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'The item you are trying to remove is not in your cart.'
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Failed to remove item from cart.'
-                    });
-                }
-            })
-            .catch(err => {
+        .then(res => res.json())
+        .then(data => {
+            if (data.message === 'Item removed from cart successfully') {
+                const updatedCart = cart.filter(item => item.productId !== productId); // Ensure proper comparison of productId
+                setCart(updatedCart);
+            } else if (data.error === 'Item not found in cart') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'The item you are trying to remove is not in your cart.'
+                });
+            } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
                     text: 'Failed to remove item from cart.'
                 });
+            }
+        })
+        .catch(err => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to remove item from cart.'
             });
-    };
+        });
+    };    
     
     
     const handleClearCart = () => {
@@ -209,25 +223,25 @@ function Cart() {
                         <p>Your cart is empty.</p>
                     ) : (
                         <div>
-                            {cart.map(item => (
-                                <Card key={item._id} className="mb-3">
-                                    <Card.Body>
-                                        <Card.Title>{item.name}</Card.Title>
-                                        <Card.Text>Quantity: {item.quantity}</Card.Text>
-                                        <Card.Text>Subtotal: {item.subtotal}</Card.Text>
-                                        <Button variant="outline-primary" style={{ marginRight: '5px', backgroundColor: '#934647', borderColor: '#934647' }} onClick={() => handleUpdateQuantity(item.productId, item.quantity + 1)}>
-                                            <AiOutlinePlus style={{ color: 'white' }} />
-                                        </Button>
-                                        <Button variant="outline-danger" style={{ marginRight: '5px', backgroundColor: '#934647', borderColor: '#934647' }} onClick={() => handleUpdateQuantity(item.productId, item.quantity - 1)}>
-                                            <AiOutlineMinus style={{ color: 'white' }} />
-                                        </Button>
-                                        <Button variant="outline-danger" style={{ backgroundColor: '#934647', borderColor: '#934647' }} onClick={() => handleRemoveItem(item.productId)}>
-                                            <AiOutlineDelete style={{ color: 'white' }} />
-                                        </Button>
-                                    </Card.Body>
-                                </Card>
-                            ))}
-                            <p>Total Price: {totalPrice}</p>
+                        {cart.map(item => (
+    <Card key={item.productId || 'defaultKey'} className="mb-3"> {/* Use a default key if productId is null */}
+        <Card.Body>
+            <Card.Title>{item.name}</Card.Title> {/* Display product name */}
+            <Card.Text>Quantity: {item.quantity}</Card.Text>
+            <Card.Text>Subtotal: {item.subtotal}</Card.Text>
+            <Button variant="outline-primary" style={{ marginRight: '5px', backgroundColor: '#934647', borderColor: '#934647' }} onClick={() => handleUpdateQuantity(item.productId, item.quantity + 1)}>
+                <AiOutlinePlus style={{ color: 'white' }} />
+            </Button>
+            <Button variant="outline-danger" style={{ marginRight: '5px', backgroundColor: '#934647', borderColor: '#934647' }} onClick={() => handleUpdateQuantity(item.productId, item.quantity - 1)}>
+                <AiOutlineMinus style={{ color: 'white' }} />
+            </Button>
+            <Button variant="outline-danger" style={{ backgroundColor: '#934647', borderColor: '#934647' }} onClick={() => handleRemoveItem(item.productId)}>
+                <AiOutlineDelete style={{ color: 'white' }} />
+            </Button>
+        </Card.Body>
+    </Card>
+))}
+                                            <p>Total Price: {totalPrice}</p>
                             <Button variant="success" onClick={handleCheckout}>
                                 Checkout
                             </Button>
