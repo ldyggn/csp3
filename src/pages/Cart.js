@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Card, Button, Row, Col } from 'react-bootstrap';
 import Swal from 'sweetalert2'; 
 import { Link, useNavigate } from "react-router-dom"; 
+import { AiOutlinePlus, AiOutlineMinus, AiOutlineDelete } from 'react-icons/ai';
 
 function Cart() {
     const [cart, setCart] = useState({});
@@ -43,13 +44,14 @@ function Cart() {
             });
     };
      console.log("data from cart state", cart)
-    const handleUpdateQuantity = (productId, newQuantity) => {
+   
+     const handleUpdateQuantity = (productId, newQuantity, fetchCartData, setCart, setTotalPrice) => {
         newQuantity = parseInt(newQuantity) || 0;
         if (newQuantity < 0) {
             newQuantity = 0;
         }
-
-        fetch(`${process.env.REACT_APP_API_URL}carts/update-cart-quantity`, {
+    
+        fetch(`${process.env.REACT_APP_API_URL}/carts/update-cart-quantity`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -63,15 +65,12 @@ function Cart() {
         .then(res => res.json())
         .then(data => {
             if (data.message === 'Product quantity updated successfully') {
-                setCart(prevCart => {
-                    const updatedCart = prevCart.map(item => {
-                        if (item.productId === productId) {
-                            const updatedSubtotal = item.price * newQuantity;
-                            return { ...item, quantity: newQuantity, subtotal: updatedSubtotal };
-                        }
-                        return item;
-                    });
-                    return updatedCart;
+               
+                fetchCartData(); 
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Product quantity updated successfully.'
                 });
             } else {
                 Swal.fire({
@@ -82,6 +81,7 @@ function Cart() {
             }
         })
         .catch(err => {
+            console.error('Error updating product quantity:', err);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -89,20 +89,29 @@ function Cart() {
             });
         });
     };
-
-    const handleRemoveItem = (productId) => {
-        fetch(`${process.env.REACT_APP_API_URL}/carts/:productId/remove-from-cart`, {
-            method: "DELETE",
+    
+    const handleRemoveItem = (productId, fetchCartData, setCart, setTotalPrice) => {
+        fetch(`${process.env.REACT_APP_API_URL}/carts/${productId}/remove-from-cart`, {
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Failed to remove item from cart.');
+            }
+            return res.json();
+        })
         .then(data => {
             if (data.message === 'Item removed from cart successfully') {
-                const updatedCart = cart.filter(item => item.productId !== productId);
-                setCart(updatedCart);
+                fetchCartData(); 
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Item removed from cart successfully.'
+                });
             } else if (data.error === 'Item not found in cart') {
                 Swal.fire({
                     icon: 'error',
@@ -118,6 +127,7 @@ function Cart() {
             }
         })
         .catch(err => {
+            console.error('Error removing item from cart:', err);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -125,10 +135,12 @@ function Cart() {
             });
         });
     };
-
+    
+       
+    
     const handleClearCart = () => {
         fetch(`${process.env.REACT_APP_API_URL}/carts/clear-cart`, {
-            method: "DELETE",
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -137,7 +149,8 @@ function Cart() {
         .then(res => res.json())
         .then(data => {
             if (data.message === 'Cart cleared successfully') {
-                setCart([]);
+                setCart({ cartItems: [] });
+                setTotalPrice(0); 
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -157,45 +170,52 @@ function Cart() {
 
     const handleCheckout = async () => {
         try {
-            const response = await fetch(`http://ec2-18-217-154-136.us-east-2.compute.amazonaws.com/b5/order/checkout`, {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('Authentication token not found');
+            }
+    
+            const response = await fetch('http://ec2-18-217-154-136.us-east-2.compute.amazonaws.com/b5/orders/checkout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${token}`
                 }
             });
-            const data = await response.json();
-            if (response.ok) {
-                navigate("/order"); 
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Order placed successfully!',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-                setCart([]);
-            } else {
-                throw new Error(data.error || 'Failed to place order');
+    
+            if (!response.ok) {
+                const errorMessage = await response.json();
+                throw new Error(`Failed to place order: ${errorMessage.error}`);
             }
+    
+            navigate("/order");
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Order placed successfully!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            // Assuming setCart is a function to clear the cart state
+            setCart([]);
         } catch (error) {
             console.error('Error placing order:', error);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Failed to place order. Please try again later.',
+                text: error.message || 'Failed to place order. Please try again later.',
                 confirmButtonText: 'OK'
             });
         }
     };
-
-    return (
+    
+     return (
         <Container className="mt-5">
             <Row className="justify-content-center">
                 {isLoading? <p>Loading</p>:
                 <Col lg={8}>
                     <h2>Your Cart</h2>
-                    {cart.cartItems.length === 0? (
+                    {cart?.cartItems?.length === 0 ? (
                         <p>Your cart is empty.</p>
                     ) : (
                         <div>
@@ -205,15 +225,16 @@ function Cart() {
                                         <Card.Title>{item.productId.name}</Card.Title>
                                         <Card.Text>Quantity: {item.quantity}</Card.Text>
                                         <Card.Text>Subtotal: {item.subtotal}</Card.Text>
-                                        <Button variant="outline-primary" style={{ marginRight: '5px', backgroundColor: '#934647', borderColor: '#934647' }} onClick={() => handleUpdateQuantity(item.productId._id, item.quantity + 1)}>
-                                            +
-                                        </Button>
-                                        <Button variant="outline-danger" style={{ marginRight: '5px', backgroundColor: '#934647', borderColor: '#934647' }} onClick={() => handleUpdateQuantity(item.productId._id, item.quantity - 1)}>
-                                            -
-                                        </Button>
-                                        <Button variant="outline-danger" style={{ backgroundColor: '#934647', borderColor: '#934647' }} onClick={() => handleRemoveItem(item._id)}>
-                                            Remove
-                                        </Button>
+                                        <Button variant="outline-primary" style={{ marginRight: '5px', backgroundColor: '#934647', borderColor: '#934647', color: 'white' }} onClick={() => handleUpdateQuantity(item.productId._id, item.quantity + 1)}>
+                                        <AiOutlinePlus />
+                                    </Button>
+                                    <Button variant="outline-danger" style={{ marginRight: '5px', backgroundColor: '#934647', borderColor: '#934647', color: 'white' }} onClick={() => handleUpdateQuantity(item.productId._id, item.quantity - 1)}>
+                                        <AiOutlineMinus />
+                                    </Button>
+                                    <Button variant="outline-danger" style={{ backgroundColor: '#934647', borderColor: '#934647', color: 'white' }} onClick={() => handleRemoveItem(item._id)}>
+                                        <AiOutlineDelete />
+                                    </Button>
+
                                     </Card.Body>
                                 </Card>
                             ))}
@@ -234,7 +255,6 @@ function Cart() {
             </Row>
         </Container>
     );
-}
+}   
 
 export default Cart;
-

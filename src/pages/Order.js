@@ -46,26 +46,33 @@ function Order() {
                         <tr>
                             <th>Order ID</th>
                             <th>Ordered On</th>
-                            <th>Items</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
                             <th>Total Price</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {orders.map(order => (
-                    <tr key={order._id}>
-                        <td>{order._id}</td>
-                        <td>{new Date(order.orderedOn).toLocaleString()}</td>
-                        <td style={{ listStyleType: 'none' }}>
-                            {order.productsOrdered.map((item, index) => (
-                                <div key={index}> 
-                                    {item.name} Quantity: {item.quantity}
-                                </div>
-                            ))}
-                        </td>
-                        <td>₱{order.totalPrice.toFixed(2)}</td>
-                    </tr>
-                    ))}
-
+                        {orders.map(order => (
+                            <tr key={order._id}>
+                                <td>{order._id}</td>
+                                <td>{new Date(order.orderedOn).toLocaleString()}</td>
+                                <td>
+                                    {order.productsOrdered.map((item, index) => (
+                                        <div key={index}>
+                                            {item.productName}
+                                        </div>
+                                    ))}
+                                </td>
+                                <td>
+                                    {order.productsOrdered.map((item, index) => (
+                                        <div key={index}>
+                                            {item.quantity}
+                                        </div>
+                                    ))}
+                                </td>
+                                <td>₱{order.totalPrice.toFixed(2)}</td>
+                            </tr>
+                        ))}
                     </tbody>
                 </Table>
             )}

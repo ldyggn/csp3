@@ -63,9 +63,11 @@ export default function ProductsCatalog() {
                     )}
                 </div>
                 <div>
-                    <Link to="/cart" style={{ fontSize: '24px', color: 'black' }}>
-                        <AiOutlineShoppingCart />
-                    </Link>
+                    {!user.isAdmin && (
+                        <Link to="/cart" style={{ fontSize: '24px', color: 'black' }}>
+                            <AiOutlineShoppingCart />
+                        </Link>
+                    )}
                 </div>
             </div>
             {error && <div>Error: {error.message}</div>}

@@ -56,7 +56,7 @@ export default function Account() {
             <Navigate to="/products" /> :
             <>
                 <Row>
-                    <Col>
+                    <Col lg={4}>
                         <h1 className="my-5">My Account</h1>
                         <div className="account-info">
                             <h2>{`${details.firstName} ${details.lastName}`}</h2>
@@ -68,12 +68,12 @@ export default function Account() {
                             </div>
                         </div>
                     </Col>
-                    <Col>
+                    <Col lg={8}>
                         <Order />
                     </Col>
                 </Row>
                 <Row className="mt-5">
-                    <Col>
+                    <Col lg={4}>
                         <p onClick={handleResetPasswordClick} style={{ cursor: 'pointer', textDecoration: 'underline' }}>Reset Password</p>
                         {showResetPassword && (
                             <div className="reset-password-form border rounded p-4">
@@ -83,7 +83,7 @@ export default function Account() {
                     </Col>
                 </Row>
                 <Row className="mt-3">
-                    <Col>
+                    <Col lg={4}>
                         <p onClick={handleUpdateProfileClick} style={{ cursor: 'pointer', textDecoration: 'underline' }}>Update Profile</p>
                         {showUpdateProfile && (
                             <div className="update-profile-form border rounded p-4">

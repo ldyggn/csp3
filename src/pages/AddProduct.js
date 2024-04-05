@@ -69,22 +69,23 @@ export default function AddProduct() {
 		(user.isAdmin === true)
 		?
 		<>
-			<h1 className="my-5 text-center"> Add Product</h1>
-			<Form onSubmit={e => createProduct(e)}>
-				<Form.Group>
-					<Form.Label>Name:</Form.Label>
-					<Form.Control type="text" placeholder="Enter Name" required value={name} onChange={e => {setName(e.target.value)}}/>
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>Description:</Form.Label>
-					<Form.Control type="text" placeholder="Enter Description" required value={description} onChange={e => {setDescription(e.target.value)}}/>
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>Price:</Form.Label>
-					<Form.Control type="text" placeholder="Enter Price" required value={price} onChange={e => {setPrice(e.target.value)}}/>
-				</Form.Group>
-				<Button variant="primary" type="submit" className="my-5">Submit</Button>
-			</Form>
+				<h1 className="my-5 text-center" style={{ color: '#934647' }}>Add Product</h1>
+		<Form onSubmit={e => createProduct(e)}>
+			<Form.Group>
+			<Form.Label style={{ fontWeight: 'bold', color: '#934647' }}>Name:</Form.Label>
+			<Form.Control type="text" placeholder="Enter Name" required value={name} onChange={e => {setName(e.target.value)}}/>
+			</Form.Group>
+			<Form.Group className='my-3'>
+			<Form.Label style={{ fontWeight: 'bold', color: '#934647' }}>Description:</Form.Label>
+			<Form.Control type="text" placeholder="Enter Description" required value={description} onChange={e => {setDescription(e.target.value)}}/>
+			</Form.Group>
+			<Form.Group>
+			<Form.Label style={{ fontWeight: 'bold', color: '#934647' }}>Price:</Form.Label>
+			<Form.Control type="text" placeholder="Enter Price" required value={price} onChange={e => {setPrice(e.target.value)}}/>
+			</Form.Group>
+			<Button variant="primary" type="submit" className="my-5">Submit</Button>
+		</Form>
+
 		</>
 		:
 		<Navigate to="/products"/>
