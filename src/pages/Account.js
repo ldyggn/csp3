@@ -14,7 +14,7 @@ export default function Account() {
     const [showResetPassword, setShowResetPassword] = useState(false);
 
     useEffect(() => {
-        fetch(`http://ec2-18-217-154-136.us-east-2.compute.amazonaws.com/b5/users/details`, {
+        fetch(`${process.env.REACT_APP_API_URL}/users/details`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }

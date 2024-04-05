@@ -21,7 +21,7 @@ export default function AddProduct() {
 		let token = localStorage.getItem('token');
 		console.log(token);
 
-		fetch('http://ec2-18-217-154-136.us-east-2.compute.amazonaws.com/b5/products/',{
+		fetch(`${process.env.REACT_APP_API_URL}/products/`,{
 			method: 'POST',
 			headers: {
 				"Content-Type": "application/json",

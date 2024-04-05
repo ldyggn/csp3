@@ -15,7 +15,7 @@ const imageMap = {
 
 const ProductCard = ({ productProp }) => {
     const { _id = '', name = '', description = '', price = '' } = productProp || {};
-    const imagePath = imageMap[name] || ''; // Provide default image path if not found
+    const imagePath = imageMap[name] || ''; 
 
     return (
         <Card className="product-card">

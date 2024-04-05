@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ProductCard from './ProductCard';
-import { AiOutlineSearch } from 'react-icons/ai'; // Import search icon
+import { AiOutlineSearch } from 'react-icons/ai'; 
 
 const ProductSearch = ({ products, onSearch }) => {
   const [searchQuery, setSearchQuery] = useState('');

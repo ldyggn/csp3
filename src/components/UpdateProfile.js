@@ -11,7 +11,7 @@ const UpdateProfile = ({ textColor }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://ec2-18-217-154-136.us-east-2.compute.amazonaws.com/b5/users/update-profile', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/users/update-profile`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

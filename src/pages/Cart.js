@@ -49,7 +49,7 @@ function Cart() {
             newQuantity = 0;
         }
 
-        fetch(`http://ec2-18-217-154-136.us-east-2.compute.amazonaws.com/b5/cart/update-cart-quantity`, {
+        fetch(`${process.env.REACT_APP_API_URL}carts/update-cart-quantity`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -91,7 +91,7 @@ function Cart() {
     };
 
     const handleRemoveItem = (productId) => {
-        fetch(`http://ec2-18-217-154-136.us-east-2.compute.amazonaws.com/b5/cart/:productId/remove-from-cart`, {
+        fetch(`${process.env.REACT_APP_API_URL}/carts/:productId/remove-from-cart`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -127,7 +127,7 @@ function Cart() {
     };
 
     const handleClearCart = () => {
-        fetch(`http://ec2-18-217-154-136.us-east-2.compute.amazonaws.com/b5/cart/clear-cart`, {
+        fetch(`${process.env.REACT_APP_API_URL}/carts/clear-cart`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",

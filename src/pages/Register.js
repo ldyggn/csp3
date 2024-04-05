@@ -29,7 +29,7 @@ export default function Register() {
             return;
         }
     
-        fetch('http://ec2-18-217-154-136.us-east-2.compute.amazonaws.com/b5/users/', {
+        fetch(`${process.env.REACT_APP_API_URL}/users/`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
