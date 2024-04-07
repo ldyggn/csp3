@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
-const UpdateProfile = ({ textColor }) => {
+const UpdateProfile = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [mobileNo, setMobileNo] = useState('');
@@ -46,51 +46,43 @@ const UpdateProfile = ({ textColor }) => {
   };
 
   return (
-    <div className="container" style={{ color: textColor }}>
-      <h2>Update Profile</h2>
+    <div className="container" style={{ color: '#934647', backgroundColor: 'white', padding: '20px', borderRadius: '5px' }}>
+      <h2 style={{ marginBottom: '20px' }}>Update Profile</h2>
       <form onSubmit={handleUpdateProfile}>
-        <div className="mb-3">
-          <label htmlFor="firstName" className="form-label">
-            First Name
-          </label>
+        <div style={{ marginBottom: '20px' }}>
+          <label htmlFor="firstName" style={{ fontWeight: 'bold' }}>First Name:</label>
           <input
             type="text"
-            className="form-control"
             id="firstName"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
+            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="lastName" className="form-label">
-            Last Name
-          </label>
+        <div style={{ marginBottom: '20px' }}>
+          <label htmlFor="lastName" style={{ fontWeight: 'bold' }}>Last Name:</label>
           <input
             type="text"
-            className="form-control"
             id="lastName"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
+            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="mobileNo" className="form-label">
-            Mobile Number
-          </label>
+        <div style={{ marginBottom: '20px' }}>
+          <label htmlFor="mobileNo" style={{ fontWeight: 'bold' }}>Mobile Number:</label>
           <input
             type="text"
-            className="form-control"
             id="mobileNo"
             value={mobileNo}
             onChange={(e) => setMobileNo(e.target.value)}
             required
+            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
           />
         </div>
-        <button type="submit" className="btn btn-primary">
-          Update Profile
-        </button>
+        <button type="submit" style={{ backgroundColor: '#f79191', color: 'white', padding: '10px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer' }}>Update Profile</button>
       </form>
     </div>
   );

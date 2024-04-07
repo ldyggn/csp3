@@ -14,8 +14,6 @@ function Cart() {
         fetchCartData();
     }, []);
 
-
-
     const fetchCartData = () => {
         setIsLoading(true)
         fetch(`${process.env.REACT_APP_API_URL}/carts/get-cart`, {
@@ -32,7 +30,6 @@ function Cart() {
                 const totalPrice = data.cart.cartItems.reduce((total, item) => total + item.subtotal, 0);
                 setTotalPrice(totalPrice);
                 setIsLoading(false);
-               
             })
             .catch(err => {
                 setIsLoading(false)
@@ -43,9 +40,8 @@ function Cart() {
                 });
             });
     };
-     console.log("data from cart state", cart)
-   
-     const handleUpdateQuantity = (productId, newQuantity, fetchCartData, setCart, setTotalPrice) => {
+    
+    const handleUpdateQuantity = (productId, newQuantity) => {
         newQuantity = parseInt(newQuantity) || 0;
         if (newQuantity < 0) {
             newQuantity = 0;
@@ -65,7 +61,6 @@ function Cart() {
         .then(res => res.json())
         .then(data => {
             if (data.message === 'Product quantity updated successfully') {
-               
                 fetchCartData(); 
                 Swal.fire({
                     icon: 'success',
@@ -90,7 +85,7 @@ function Cart() {
         });
     };
     
-    const handleRemoveItem = (productId, fetchCartData, setCart, setTotalPrice) => {
+    const handleRemoveItem = (productId) => {
         fetch(`${process.env.REACT_APP_API_URL}/carts/${productId}/remove-from-cart`, {
             method: "PATCH",
             headers: {
@@ -136,8 +131,6 @@ function Cart() {
         });
     };
     
-       
-    
     const handleClearCart = () => {
         fetch(`${process.env.REACT_APP_API_URL}/carts/clear-cart`, {
             method: "PUT",
@@ -151,6 +144,13 @@ function Cart() {
             if (data.message === 'Cart cleared successfully') {
                 setCart({ cartItems: [] });
                 setTotalPrice(0); 
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Cart cleared successfully.',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -167,7 +167,7 @@ function Cart() {
             });
         });
     };
-
+    
     const handleCheckout = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -209,23 +209,26 @@ function Cart() {
         }
     };
     
-     return (
+    return (
         <Container className="mt-5">
             <Row className="justify-content-center">
                 {isLoading? <p>Loading</p>:
                 <Col lg={8}>
                     <h2>Your Cart</h2>
                     {cart?.cartItems?.length === 0 ? (
-                        <p>Your cart is empty.</p>
+                        <div>
+                            <p>Your cart is empty.</p>
+                            <Button variant="primary" onClick={() => navigate("/products")} style={{ marginBottom: '10px' }}>Add Item</Button>
+                        </div>
                     ) : (
                         <div>
-                            {cart.cartItems.map(item => (
-                                <Card key={item._id} className="mb-3">
-                                    <Card.Body>
-                                        <Card.Title>{item.productId.name}</Card.Title>
-                                        <Card.Text>Quantity: {item.quantity}</Card.Text>
-                                        <Card.Text>Subtotal: {item.subtotal}</Card.Text>
-                                        <Button variant="outline-primary" style={{ marginRight: '5px', backgroundColor: '#934647', borderColor: '#934647', color: 'white' }} onClick={() => handleUpdateQuantity(item.productId._id, item.quantity + 1)}>
+                        {cart.cartItems.map(item => (
+                            <Card key={item._id} className="mb-3">
+                                <Card.Body>
+                                    <Card.Title>{item.productId ? item.productId.name : 'Product Name Not Available'}</Card.Title>
+                                    <Card.Text>Quantity: {item.quantity}</Card.Text>
+                                    <Card.Text>Subtotal: {item.subtotal}</Card.Text>
+                                    <Button variant="outline-primary" style={{ marginRight: '5px', backgroundColor: '#934647', borderColor: '#934647', color: 'white' }} onClick={() => handleUpdateQuantity(item.productId._id, item.quantity + 1)}>
                                         <AiOutlinePlus />
                                     </Button>
                                     <Button variant="outline-danger" style={{ marginRight: '5px', backgroundColor: '#934647', borderColor: '#934647', color: 'white' }} onClick={() => handleUpdateQuantity(item.productId._id, item.quantity - 1)}>
@@ -234,10 +237,10 @@ function Cart() {
                                     <Button variant="outline-danger" style={{ backgroundColor: '#934647', borderColor: '#934647', color: 'white' }} onClick={() => handleRemoveItem(item._id)}>
                                         <AiOutlineDelete />
                                     </Button>
+                                </Card.Body>
+                            </Card>
+                        ))}
 
-                                    </Card.Body>
-                                </Card>
-                            ))}
                             <p>Total Price: {totalPrice}</p>
                             <Button variant="success" onClick={handleCheckout}>
                                 Checkout
@@ -245,9 +248,6 @@ function Cart() {
                             <Button variant="danger" onClick={handleClearCart} style={{ marginLeft: '5px' }}>
                                 Clear Cart
                             </Button>
-                            <Link to="/products">
-                                <Button variant="primary" style={{ marginLeft: '5px', backgroundColor: '#934647', borderColor: '#934647' }}>Add More Items</Button>
-                            </Link>
                         </div>
                     )}
                 </Col>
@@ -255,6 +255,6 @@ function Cart() {
             </Row>
         </Container>
     );
-}   
+}
 
 export default Cart;

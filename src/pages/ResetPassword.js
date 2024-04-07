@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ResetPassword = ({ textColor }) => {
+const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -39,39 +39,33 @@ const ResetPassword = ({ textColor }) => {
   };
 
   return (
-    <div className="container" style={{ color: textColor }}>
-      <h2>Reset Password</h2>
+    <div className="container" style={{ color: '#934647', backgroundColor: 'white', padding: '20px', borderRadius: '5px' }}>
+      <h2 style={{ marginBottom: '20px' }}>Reset Password</h2>
       <form onSubmit={handleResetPassword}>
-        <div className="mb-3">
-          <label htmlFor="password" className="form-label">
-            New Password
-          </label>
+        <div style={{ marginBottom: '20px' }}>
+          <label htmlFor="password" style={{ fontWeight: 'bold' }}>New Password:</label>
           <input
             type="password"
-            className="form-control"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="confirmPassword" className="form-label">
-            Confirm Password
-          </label>
+        <div style={{ marginBottom: '20px' }}>
+          <label htmlFor="confirmPassword" style={{ fontWeight: 'bold' }}>Confirm Password:</label>
           <input
             type="password"
-            className="form-control"
             id="confirmPassword"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
           />
         </div>
-        {message && <div className="alert alert-danger">{message}</div>}
-        <button type="submit" className="btn btn-primary">
-          Reset Password
-        </button>
+        {message && <div style={{ marginBottom: '20px', color: '#ff0000' }}>{message}</div>}
+        <button type="submit" style={{ backgroundColor: '#f79191', color: 'white', padding: '10px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer' }}>Reset Password</button>
       </form>
     </div>
   );

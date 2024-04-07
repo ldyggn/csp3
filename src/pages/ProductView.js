@@ -106,7 +106,8 @@ export default function ProductView() {
                                     />
                                 </Form.Group>
                                 {user.id !== null ?
-                                    <Button variant="primary" onClick={addToCart} className="my-3 add-to-cart-button">Add to Cart</Button>
+                                    <Button variant="primary" onClick={addToCart} className="my-3 add-to-cart-button"
+                                     style={{ backgroundColor: '#f79191', borderColor: '#f79191' }}>Add to Cart</Button>
                                     :
                                     <Link className="btn btn-danger btn-block my-3" to="/login">Log in to shop</Link>
                                 }

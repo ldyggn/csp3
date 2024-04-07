@@ -1,17 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import UserContext from '../UserContext';
-import UpdateProfile from '../components/UpdateProfile';
-import ResetPassword from '../components/ResetPassword';
 import Order from './Order';
 
 export default function Account() {
     const { user } = useContext(UserContext);
     const [details, setDetails] = useState({});
-    const [showUpdateProfile, setShowUpdateProfile] = useState(false);
-    const [showResetPassword, setShowResetPassword] = useState(false);
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}/users/details`, {
@@ -41,16 +37,6 @@ export default function Account() {
             });
     }, []);
 
-    const handleUpdateProfileClick = () => {
-        setShowUpdateProfile(prevState => !prevState); // Toggle the state
-        setShowResetPassword(false); // Hide Reset Password form if it's currently shown
-    };
-
-    const handleResetPasswordClick = () => {
-        setShowResetPassword(prevState => !prevState); // Toggle the state
-        setShowUpdateProfile(false); // Hide Update Profile form if it's currently shown
-    };
-
     return (
         (user.id === null) ?
             <Navigate to="/products" /> :
@@ -67,29 +53,15 @@ export default function Account() {
                                 <p>Mobile No: {details.mobileNo}</p>
                             </div>
                         </div>
+                        <div className="mt-5">
+                            <Link to="/resetPassword" style={{ cursor: 'pointer', textDecoration: 'underline', color: 'black' }}>Reset Password</Link>
+                        </div>
+                        <div className="mt-3">
+                            <Link to="/updateProfile" style={{ cursor: 'pointer', textDecoration: 'underline', color: 'black' }}>Update Profile</Link>
+                        </div>
                     </Col>
                     <Col lg={8}>
                         <Order />
-                    </Col>
-                </Row>
-                <Row className="mt-5">
-                    <Col lg={4}>
-                        <p onClick={handleResetPasswordClick} style={{ cursor: 'pointer', textDecoration: 'underline' }}>Reset Password</p>
-                        {showResetPassword && (
-                            <div className="reset-password-form border rounded p-4">
-                                <ResetPassword textColor="#f79191" />
-                            </div>
-                        )}
-                    </Col>
-                </Row>
-                <Row className="mt-3">
-                    <Col lg={4}>
-                        <p onClick={handleUpdateProfileClick} style={{ cursor: 'pointer', textDecoration: 'underline' }}>Update Profile</p>
-                        {showUpdateProfile && (
-                            <div className="update-profile-form border rounded p-4">
-                                <UpdateProfile textColor="#f79191" />
-                            </div>
-                        )}
                     </Col>
                 </Row>
             </>

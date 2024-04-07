@@ -187,7 +187,11 @@
   color: #ffff;
 }
 
-/* Admin Dashboard Styles */
+/* AdminView Styles */
+.admin-table-container {
+  width: 100%;
+}
+
 .admin-dashboard {
   text-align: center;
   margin-top: 2rem;
@@ -197,10 +201,7 @@
 
 .admin-table {
   color: var(--accent-color);
-}
-
-.table-cell {
-  padding: 8px;
+  width: 100%;
 }
 
 .text-success {
@@ -211,28 +212,24 @@
   color: red;
 }
 
-.reset-password-form,
-.update-profile-form {
-    background-color: var(--secondary-color);
-    color: #ffff;
+/* Responsive design */
+@media screen and (max-width: 992px) {
+  .admin-table {
+    font-size: 0.8rem;
+  }
+
+  .table-cell {
+    padding: 6px; 
+  }
 }
 
-.reset-password-form button,
-.update-profile-form button {
-    width: 100%;
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-    color: var(--accent-color);
-    margin-top: 20px;
-    border-radius: 5px;
+@media screen and (max-width: 576px) {
+  .admin-dashboard {
+    padding: 0 15px;
+  }
 }
 
-.reset-password-form button:hover,
-.update-profile-form button:hover {
-    background-color: #f79191;
-    border-color: #f79191;
-}
-
+/* Product Card Styles */
 .product-card {
   width: calc(33.33% - 20px);
   margin: 0 10px 20px 10px; 
@@ -271,7 +268,7 @@
 .product-card-price {
   font-size: 1rem;
   font-weight: bold;
-  color: var(--primary-color);
+  color: black;
   margin: 0 1rem 1rem 1rem;
 }
 

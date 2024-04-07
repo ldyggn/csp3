@@ -26,7 +26,13 @@ const ProductCard = ({ productProp }) => {
                 <Card.Title as="h2" className="product-card-title">{name}</Card.Title>
                 <Card.Text className="product-card-description">{description}</Card.Text>
                 <Card.Text className="product-card-price">₱{price}</Card.Text>
-                <Link className="btn btn-primary product-card-button" to={`/products/${_id}`}>Details</Link>
+                <Link 
+                    className="btn btn-primary product-card-button" 
+                    to={`/products/${_id}`}
+                    style={{ backgroundColor: '#f79191', borderColor: '#f79191' }}
+                >
+                    Details
+                </Link>
             </Card.Body>
         </Card>
     );
