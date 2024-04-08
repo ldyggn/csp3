@@ -219,7 +219,7 @@ function Cart() {
                     {cart?.cartItems?.length === 0 ? (
                         <div>
                             <p>Your cart is empty.</p>
-                            <Button variant="primary" onClick={() => navigate("/products")} style={{ marginBottom: '10px' }}>Add Item</Button>
+                            <Button variant="primary" onClick={() => navigate("/products")} style={{ marginBottom: '10px', backgroundColor: '#f79191', color: 'white', borderColor: '#f79191' }}>Add Item/s</Button>
                         </div>
                     ) : (
                         <div>

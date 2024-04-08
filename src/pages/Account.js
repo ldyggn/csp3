@@ -3,7 +3,7 @@ import { Row, Col } from 'react-bootstrap';
 import { Navigate, Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import UserContext from '../UserContext';
-import Order from './Order';
+import OrderHistory from './OrderHistory';
 
 export default function Account() {
     const { user } = useContext(UserContext);
@@ -62,7 +62,7 @@ export default function Account() {
                             </div>
                         </Col>
                         <Col lg={8}>
-                            <Order />
+                            <OrderHistory />
                         </Col>
                     </Row>
                 </>

@@ -55,7 +55,7 @@ export default function ProductsCatalog() {
     };
 
     return (
-        <div style={{ marginBottom: '90px' }}> {/* Add bottom margin */}
+        <div style={{ marginBottom: '90px' }}> 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                 <div>
                     {!user.isAdmin && (

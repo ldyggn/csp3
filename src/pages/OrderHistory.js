@@ -2,27 +2,36 @@ import React, { useState, useEffect } from 'react';
 import { Container, Table } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 
-function Order() {
+function OrderHistory({ user }) { 
+
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
-        fetchOrders();
-    }, []);
+        fetchOrders(); 
+    }, [user]);
 
     const fetchOrders = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/orders/my-orders`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+            let url = `${process.env.REACT_APP_API_URL}/orders/my-orders`;
+
+            // Check if the user is an admin
+            const isAdmin = user && user.isAdmin;
+
+            // If the user is not an admin, fetch their own orders
+            if (!isAdmin) {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    setOrders(data.orders || data); 
+                } else {
+                    throw new Error(data.error || 'Failed to fetch orders');
                 }
-            });
-            const data = await response.json();
-            if (response.ok) {
-                setOrders(data.orders);
-            } else {
-                throw new Error(data.error || 'Failed to fetch orders');
             }
         } catch (error) {
             console.error('Error fetching orders:', error);
@@ -80,4 +89,4 @@ function Order() {
     );
 }
 
-export default Order;
+export default OrderHistory;

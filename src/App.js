@@ -9,7 +9,7 @@ import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Error from './pages/Error';
 import Account from './pages/Account';
-import Order from './pages/Order';
+import OrderHistory from './pages/OrderHistory';
 import Cart from './pages/Cart';
 import ResetPassword from './pages/ResetPassword';
 import UpdateProfile from './pages/UpdateProfile';
@@ -71,7 +71,7 @@ function App() {
             <Route path="/resetPassword" element={<ResetPassword />} />
             <Route path="/updateProfile" element={<UpdateProfile />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/order" element={<Order />} />
+            <Route path="/order" element={<OrderHistory />} />
             <Route path="*" element={<Error />} />
           </Routes>
           <Footer /> 
