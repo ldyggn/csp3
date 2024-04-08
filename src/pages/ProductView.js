@@ -88,7 +88,7 @@ export default function ProductView() {
             <Container className="mt-5">
                 <Row className="justify-content-center">
                     <Col lg={6} className="d-flex justify-content-center">
-                        <Card className="product-card text-center">
+                        <Card className="product-card text-center" style={{ width: '100%', maxWidth: '400px', padding: '20px', border: '1px solid #ccc', borderRadius: '5px', backgroundColor: 'white', color: '#934647' }}>
                             <div className="product-card-image-container">
                                 <Card.Img variant="top" src={imagePath} alt={name} className="product-card-image" />
                             </div>

@@ -46,44 +46,46 @@ const UpdateProfile = () => {
   };
 
   return (
-    <div className="container" style={{ color: '#934647', backgroundColor: 'white', padding: '20px', borderRadius: '5px' }}>
-      <h2 style={{ marginBottom: '20px' }}>Update Profile</h2>
-      <form onSubmit={handleUpdateProfile}>
-        <div style={{ marginBottom: '20px' }}>
-          <label htmlFor="firstName" style={{ fontWeight: 'bold' }}>First Name:</label>
-          <input
-            type="text"
-            id="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-          />
-        </div>
-        <div style={{ marginBottom: '20px' }}>
-          <label htmlFor="lastName" style={{ fontWeight: 'bold' }}>Last Name:</label>
-          <input
-            type="text"
-            id="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-          />
-        </div>
-        <div style={{ marginBottom: '20px' }}>
-          <label htmlFor="mobileNo" style={{ fontWeight: 'bold' }}>Mobile Number:</label>
-          <input
-            type="text"
-            id="mobileNo"
-            value={mobileNo}
-            onChange={(e) => setMobileNo(e.target.value)}
-            required
-            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-          />
-        </div>
-        <button type="submit" style={{ backgroundColor: '#f79191', color: 'white', padding: '10px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer' }}>Update Profile</button>
-      </form>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <div style={{ width: '100%', maxWidth: '400px', padding: '20px', border: '1px solid #ccc', borderRadius: '5px', backgroundColor: 'white', color: '#934647' }}>
+        <h2 style={{ marginBottom: '20px' }}>Update Profile</h2>
+        <form onSubmit={handleUpdateProfile}>
+          <div style={{ marginBottom: '20px' }}>
+            <label htmlFor="firstName" style={{ fontWeight: 'bold' }}>First Name:</label>
+            <input
+              type="text"
+              id="firstName"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+              style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+            />
+          </div>
+          <div style={{ marginBottom: '20px' }}>
+            <label htmlFor="lastName" style={{ fontWeight: 'bold' }}>Last Name:</label>
+            <input
+              type="text"
+              id="lastName"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+              style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+            />
+          </div>
+          <div style={{ marginBottom: '20px' }}>
+            <label htmlFor="mobileNo" style={{ fontWeight: 'bold' }}>Mobile Number:</label>
+            <input
+              type="text"
+              id="mobileNo"
+              value={mobileNo}
+              onChange={(e) => setMobileNo(e.target.value)}
+              required
+              style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+            />
+          </div>
+          <button type="submit" style={{ width: '100%', backgroundColor: '#f79191', color: 'white', padding: '10px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer' }}>Update Profile</button>
+        </form>
+      </div>
     </div>
   );
 };
