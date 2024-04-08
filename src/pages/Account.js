@@ -38,32 +38,35 @@ export default function Account() {
     }, []);
 
     return (
-        (user.id === null) ?
-            <Navigate to="/products" /> :
-            <>
-                <Row>
-                    <Col lg={4}>
-                        <h1 className="my-5">My Account</h1>
-                        <div className="account-info">
-                            <h2>{`${details.firstName} ${details.lastName}`}</h2>
-                            <hr />
-                            <div className="contact-info">
-                                <h4>Contacts</h4>
-                                <p>Email: {details.email}</p>
-                                <p>Mobile No: {details.mobileNo}</p>
+        <div className="account-container"> 
+            {(user.id === null) ?
+                <Navigate to="/products" /> :
+                <>
+                    <Row>
+                        <Col lg={4}>
+                            <h1 className="my-5">My Account</h1>
+                            <div className="account-info">
+                                <h2>{`${details.firstName} ${details.lastName}`}</h2>
+                                <hr />
+                                <div className="contact-info">
+                                    <h4>Contacts</h4>
+                                    <p>Email: {details.email}</p>
+                                    <p>Mobile No: {details.mobileNo}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div className="mt-5">
-                            <Link to="/resetPassword" style={{ cursor: 'pointer', textDecoration: 'underline', color: 'black' }}>Reset Password</Link>
-                        </div>
-                        <div className="mt-3">
-                            <Link to="/updateProfile" style={{ cursor: 'pointer', textDecoration: 'underline', color: 'black' }}>Update Profile</Link>
-                        </div>
-                    </Col>
-                    <Col lg={8}>
-                        <Order />
-                    </Col>
-                </Row>
-            </>
+                            <div className="mt-5">
+                                <Link to="/resetPassword" style={{ cursor: 'pointer', textDecoration: 'underline', color: 'black' }}>Reset Password</Link>
+                            </div>
+                            <div className="mt-3">
+                                <Link to="/updateProfile" style={{ cursor: 'pointer', textDecoration: 'underline', color: 'black' }}>Update Profile</Link>
+                            </div>
+                        </Col>
+                        <Col lg={8}>
+                            <Order />
+                        </Col>
+                    </Row>
+                </>
+            }
+        </div>
     );
 }

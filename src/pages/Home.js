@@ -2,6 +2,7 @@ import Banner from '../components/Banner';
 import Highlights from '../components/Highlights';
 import FeaturedProducts from '../components/FeaturedProducts';
 import BannerImage from '../images/Banner.svg';
+import Footer from '../components/Footer';
 
 export default function Home() {
     const data = {

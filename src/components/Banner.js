@@ -1,9 +1,11 @@
 import { Row, Col } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
 import { Link } from 'react-router-dom';
 
 export default function Banner({ data, image }) {
     const { title, content, destination, label } = data;
     return (
+        <Container fluid>
         <Row>
             <Col className="p-0">
                 <div className="banner-container">
@@ -16,5 +18,6 @@ export default function Banner({ data, image }) {
                 </div>
             </Col>
         </Row>
+        </Container>
     );
 }

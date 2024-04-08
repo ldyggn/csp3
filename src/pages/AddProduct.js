@@ -60,7 +60,7 @@ export default function AddProduct() {
     return (
         (user.isAdmin === true) ?
             <>
-                <div className="container" style={{ color: '#934647', backgroundColor: 'white', padding: '20px', borderRadius: '5px' }}>
+                <div className="addproduct-container" style={{ color: '#934647', backgroundColor: 'white', padding: '20px', borderRadius: '5px' }}>
                     <h1 className="my-5 text-center">Add Product</h1>
                     <Form onSubmit={e => createProduct(e)}>
                         <Form.Group>

@@ -210,6 +210,7 @@ function Cart() {
     };
     
     return (
+        <div className='cart-container'>
         <Container className="mt-5">
             <Row className="justify-content-center">
                 {isLoading? <p>Loading</p>:
@@ -254,6 +255,7 @@ function Cart() {
             }
             </Row>
         </Container>
+        </div>
     );
 }
 

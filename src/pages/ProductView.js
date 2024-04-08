@@ -85,6 +85,7 @@ export default function ProductView() {
     const imagePath = imageMap[name] || ''; 
 
     return (
+        <div className='productview-container'>
             <Container className="mt-5">
                 <Row className="justify-content-center">
                     <Col lg={6} className="d-flex justify-content-center">
@@ -116,5 +117,6 @@ export default function ProductView() {
                     </Col>
                 </Row>
             </Container>
+        </div>
     );
 }

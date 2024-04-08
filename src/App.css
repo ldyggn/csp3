@@ -323,3 +323,61 @@
   align-items: center;
   justify-content: center;
 }
+
+/* Footer Styles */
+.footer {
+  background-color: var(--accent-color); /* Set background color to #934647 */
+  color: white; /* Set text color to white */
+  padding: 1px 0; /* Adjust padding as needed */
+  bottom: 0; /* Stick footer to the bottom */
+  left: 0;
+  width: 100%; /* Make footer full width */
+  z-index: 1000; /* Ensure footer is above other content */
+}
+
+.account-container {
+  min-height: 100vh; /* Set minimum height to the viewport height */
+  position: relative; /* Set position to relative */
+}
+
+.productview-container {
+  min-height: 100vh; /* Set minimum height to the viewport height */
+  position: relative; /* Set position to relative */
+}
+
+.cart-container {
+  min-height: 100vh; /* Set minimum height to the viewport height */
+  position: relative; /* Set position to relative */
+}
+
+.addproduct-container {
+  min-height: 100vh; /* Set minimum height to the viewport height */
+  position: relative; /* Set position to relative */
+}
+
+/* Ensure footer is hidden by default */
+.footer.hide {
+  transform: translateY(100%);
+}
+
+.social-icons {
+  display: flex;
+  align-items: center;
+}
+
+.social-icon {
+  font-size: 24px; /* Adjust icon size as needed */
+  margin-right: 20px; /* Adjust spacing between icons */
+  color: white; /* Set icon color to white */
+}
+
+/* Adjust padding for smaller screens */
+@media screen and (max-width: 576px) {
+  .footer {
+    padding: 5px 0; /* Adjust padding for smaller screens */
+  }
+  .social-icons {
+    justify-content: center; /* Center the social icons horizontally */
+  }
+}
+
