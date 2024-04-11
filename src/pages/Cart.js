@@ -96,7 +96,7 @@ function Cart() {
             });
         });
     };
-    
+     
     // Function to handle removing an item from the cart
     const handleRemoveItem = (productId) => {
         // Remove item from the server
@@ -253,30 +253,36 @@ function Cart() {
                     ) : (
                         <div>
                         {cart.cartItems.map(item => (
-                            <Card key={item._id} className="mb-3">
-                                <Card.Body>
-                                    <Card.Title>{item.productId ? item.productId.name : 'Product Name Not Available'}</Card.Title>
-                                    <Card.Text>Quantity: {item.quantity}</Card.Text>
-                                    <Card.Text>Subtotal: {item.subtotal}</Card.Text>
-                                    {/* Buttons to update quantity, remove item, and clear cart */}
-                                    <Button variant="outline-primary" style={{ marginRight: '5px', backgroundColor: '#934647', borderColor: '#934647', color: 'white' }} onClick={() => handleUpdateQuantity(item.productId._id, item.quantity + 1)}>
-                                        <AiOutlinePlus />
-                                    </Button>
-                                    <Button variant="outline-danger" style={{ marginRight: '5px', backgroundColor: '#934647', borderColor: '#934647', color: 'white' }} onClick={() => handleUpdateQuantity(item.productId._id, item.quantity - 1)}>
-                                        <AiOutlineMinus />
-                                    </Button>
-                                    <Button variant="outline-danger" style={{ backgroundColor: '#934647', borderColor: '#934647', color: 'white' }} onClick={() => handleRemoveItem(item._id)}>
-                                        <AiOutlineDelete />
-                                    </Button>
-                                </Card.Body>
-                            </Card>
-                        ))}
-
+                                <Card key={item._id} className="mb-3">
+                                    <Card.Body>
+                                        <Card.Title>{item.productId ? item.productId.name : 'Product Name Not Available'}</Card.Title>
+                                        <Card.Text>Quantity: {item.quantity}</Card.Text>
+                                        <Card.Text>Subtotal: {item.subtotal}</Card.Text>
+                                        {/* Buttons to update quantity, remove item, and clear cart */}
+                                        <Button
+                                            variant="outline-primary"
+                                            style={{ marginRight: '5px', backgroundColor: '#934647', borderColor: '#934647', color: 'white' }}
+                                            onClick={() => handleUpdateQuantity(item.productId._id, item.quantity + 1)}>
+                                            <AiOutlinePlus />
+                                        </Button>
+                                        <Button
+                                            variant="outline-danger"
+                                            style={{ marginRight: '5px', backgroundColor: '#934647', borderColor: '#934647', color: 'white' }}
+                                            onClick={() => handleUpdateQuantity(item.productId._id, item.quantity - 1)}>
+                                            <AiOutlineMinus />
+                                        </Button>
+                                        <Button variant="outline-danger" style={{ backgroundColor: '#934647', borderColor: '#934647', color: 'white' }} onClick={() => handleRemoveItem(item.productId._id)}>
+                                            <AiOutlineDelete />
+                                        </Button>
+                                    </Card.Body>
+                                </Card>
+                            ))}
                             <p>Total Price: {totalPrice}</p>
                             {/* Buttons to checkout and clear cart */}
                             <Button variant="success" onClick={handleCheckout}>
                                 Checkout
                             </Button>
+                            <Button variant="primary" onClick={() => navigate("/products")} style={{ marginLeft: '5px', backgroundColor: '#f79191', color: 'white', borderColor: '#f79191' }}>Add More Item/s</Button>
                             <Button variant="danger" onClick={handleClearCart} style={{ marginLeft: '5px' }}>
                                 Clear Cart
                             </Button>

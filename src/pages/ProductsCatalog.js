@@ -66,7 +66,7 @@ export default function ProductsCatalog() {
     };
 
     return (
-        <div div className='productscatalog-container' style={{ marginBottom: '90px' }}> 
+        <div className='productscatalog-container' style={{ marginBottom: '90px' }}>
             {/* Search bar and cart icon */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                 <div>
@@ -98,5 +98,5 @@ export default function ProductsCatalog() {
                 )}
             </div>
         </div>
-    );    
+    );     
 }
