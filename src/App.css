@@ -212,13 +212,6 @@
   color: red;
 }
 
-.order-history {
-  text-align: center;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  color: var(--accent-color);
-}
-
 /* Responsive design */
 @media screen and (max-width: 992px) {
   .admin-table {
@@ -398,3 +391,10 @@
   }
 }
 
+/* Order History Styles */
+.orderhistory-container {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  color: var(--accent-color);
+}

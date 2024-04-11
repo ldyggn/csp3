@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Container, Table } from 'react-bootstrap';
 import Swal from 'sweetalert2';
+import UserContext from '../UserContext'; // Import UserContext
 
-// Component for displaying order history
-function OrderHistory({ user }) {
+function OrderHistory() {
+    // Access user state from context
+    const { user } = useContext(UserContext);
 
     // State to store orders
     const [orders, setOrders] = useState([]);
@@ -49,15 +51,14 @@ function OrderHistory({ user }) {
         }
     };
 
-
     // Function to format products and quantities
     const formatProducts = (productsOrdered) => {
         return productsOrdered.map(item => `${item.productName} (${item.quantity})`).join(', ');
     };
 
     return (
-        <Container className="orderhistory-container mt-5">
-            <h2>Order History</h2>
+        <Container className="orderhistory-container">
+            <h1 className='my-5'>Order History</h1>
             {orders.length === 0 ? (
                 <p>No orders found.</p>
             ) : (
