@@ -34,8 +34,6 @@ export default function AppNavbar() {
                 <>
                   {/* Add Product link */}
                   <Nav.Link as={Link} to="/addProduct">Add Product</Nav.Link>
-                  {/* Order History link */}
-                  <Nav.Link as={NavLink} to="/order" exact="true">Order History</Nav.Link>
                   {/* Logout link */}
                   <Nav.Link as={Link} to="/logout">Logout</Nav.Link>
                 </>

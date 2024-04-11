@@ -16,26 +16,26 @@ function OrderHistory({ user }) {
     // Function to fetch orders
     const fetchOrders = async () => {
         try {
-            let url = `${process.env.REACT_APP_API_URL}/orders/my-orders`;
+            let url;
+            // Determine URL based on user's role
+            if (user && user.isAdmin) {
+                url = `${process.env.REACT_APP_API_URL}/orders/all-orders`;
+            } else {
+                url = `${process.env.REACT_APP_API_URL}/orders/my-orders`;
+            }
 
-            // Check if the user is an admin
-            const isAdmin = user && user.isAdmin;
-
-            // If the user is not an admin, fetch their own orders
-            if (!isAdmin) {
-                const response = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    setOrders(data.orders || data);
-                } else {
-                    throw new Error(data.error || 'Failed to fetch orders');
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
+            });
+            const data = await response.json();
+            if (response.ok) {
+                setOrders(data.orders || data);
+            } else {
+                throw new Error(data.error || 'Failed to fetch orders');
             }
         } catch (error) {
             console.error('Error fetching orders:', error);
@@ -47,6 +47,12 @@ function OrderHistory({ user }) {
                 confirmButtonText: 'OK'
             });
         }
+    };
+
+
+    // Function to format products and quantities
+    const formatProducts = (productsOrdered) => {
+        return productsOrdered.map(item => `${item.productName} (${item.quantity})`).join(', ');
     };
 
     return (
@@ -61,8 +67,7 @@ function OrderHistory({ user }) {
                             <tr>
                                 <th>Order ID</th>
                                 <th>Ordered On</th>
-                                <th>Product</th>
-                                <th>Quantity</th>
+                                <th>Products</th>
                                 <th>Total Price</th>
                             </tr>
                         </thead>
@@ -71,28 +76,7 @@ function OrderHistory({ user }) {
                                 <tr key={order._id}>
                                     <td>{order._id}</td>
                                     <td>{new Date(order.orderedOn).toLocaleString()}</td>
-                                    <td>
-                                        <Table striped bordered hover size="sm">
-                                            <tbody>
-                                                {order.productsOrdered.map((item, index) => (
-                                                    <tr key={index}>
-                                                        <td>{item.productName}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </Table>
-                                    </td>
-                                    <td>
-                                        <Table striped bordered hover size="sm">
-                                            <tbody>
-                                                {order.productsOrdered.map((item, index) => (
-                                                    <tr key={index}>
-                                                        <td>{item.quantity}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </Table>
-                                    </td>
+                                    <td>{formatProducts(order.productsOrdered)}</td>
                                     <td>₱{order.totalPrice.toFixed(2)}</td>
                                 </tr>
                             ))}

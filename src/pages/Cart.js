@@ -46,73 +46,73 @@ function Cart() {
             });
     };
 
-   // Function to handle updating quantity of items in the cart
-const handleUpdateQuantity = (productId, newQuantity) => {
-    const token = localStorage.getItem('token');
-    // Ensure quantity is not negative
-    newQuantity = parseInt(newQuantity) || 0;
-    if (newQuantity < 0) {
-        newQuantity = 0;
-    }
-
-    // Update quantity on the server
-    fetch(`${process.env.REACT_APP_API_URL}/carts/update-cart-quantity`, {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-            productId,
-            quantity: newQuantity
-        })
-    })
-    .then(res => {
-        if (!res.ok) {
-            throw new Error('Failed to update product quantity.');
+    // Function to handle updating quantity of items in the cart
+    const handleUpdateQuantity = (productId, newQuantity) => {
+        const token = localStorage.getItem('token');
+        // Ensure quantity is not negative
+        newQuantity = parseInt(newQuantity) || 0;
+        if (newQuantity < 0) {
+            newQuantity = 0;
         }
-        return res.json();
-    })
-    .then(data => {
-        if (data.message === 'Product quantity updated successfully') {
-            // If successful, update the quantity in the cart state
-            const updatedCart = { ...cart };
-            const updatedItemIndex = updatedCart.cartItems.findIndex(item => item.productId._id === productId);
-            if (updatedItemIndex !== -1) {
-                updatedCart.cartItems[updatedItemIndex].quantity = newQuantity;
-                // Calculate the new subtotal for the updated item
-                updatedCart.cartItems[updatedItemIndex].subtotal = newQuantity * updatedCart.cartItems[updatedItemIndex].productId.price;
-                // Update the cart state
-                setCart(updatedCart);
-                // Recalculate total price
-                const totalPrice = updatedCart.cartItems.reduce((total, item) => total + item.subtotal, 0);
-                setTotalPrice(totalPrice);
+
+        // Update quantity on the server
+        fetch(`${process.env.REACT_APP_API_URL}/carts/update-cart-quantity`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                productId,
+                quantity: newQuantity
+            })
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Failed to update product quantity.');
             }
-            // Display success message
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: 'Product quantity updated successfully.'
-            });
-        } else {
+            return res.json();
+        })
+        .then(data => {
+            if (data.message === 'Product quantity updated successfully') {
+                // If successful, update the quantity in the cart state
+                const updatedCart = { ...cart };
+                const updatedItemIndex = updatedCart.cartItems.findIndex(item => item.productId._id === productId);
+                if (updatedItemIndex !== -1) {
+                    updatedCart.cartItems[updatedItemIndex].quantity = newQuantity;
+                    // Calculate the new subtotal for the updated item
+                    updatedCart.cartItems[updatedItemIndex].subtotal = newQuantity * updatedCart.cartItems[updatedItemIndex].productId.price;
+                    // Update the cart state
+                    setCart(updatedCart);
+                    // Recalculate total price
+                    const totalPrice = updatedCart.cartItems.reduce((total, item) => total + item.subtotal, 0);
+                    setTotalPrice(totalPrice);
+                }
+                // Display success message
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Product quantity updated successfully.'
+                });
+            } else {
+                // Display error message if updating quantity fails
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to update product quantity.'
+                });
+            }
+        })
+        .catch(err => {
             // Display error message if updating quantity fails
+            console.error('Error updating product quantity:', err);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'Failed to update product quantity.'
             });
-        }
-    })
-    .catch(err => {
-        // Display error message if updating quantity fails
-        console.error('Error updating product quantity:', err);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Failed to update product quantity.'
         });
-    });
-};
+    };
     
     // Function to handle removing an item from the cart
     const handleRemoveItem = (productId) => {
