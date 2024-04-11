@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Card, Button, Row, Col } from 'react-bootstrap';
 import Swal from 'sweetalert2'; 
-import { Link, useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom"; 
 import { AiOutlinePlus, AiOutlineMinus, AiOutlineDelete } from 'react-icons/ai';
 
 function Cart() {
@@ -18,7 +18,7 @@ function Cart() {
 
     // Function to fetch cart data from the server
     const fetchCartData = () => {
-        setIsLoading(true)
+        setIsLoading(true);
         fetch(`${process.env.REACT_APP_API_URL}/carts/get-cart`, {
             method: "GET",
             headers: {
@@ -26,77 +26,89 @@ function Cart() {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                // Update state with fetched cart data and calculate total price
-                setCart(data.cart);
-                const totalPrice = data.cart.cartItems.reduce((total, item) => total + item.subtotal, 0);
-                setTotalPrice(totalPrice);
-                setIsLoading(false);
-            })
-            .catch(err => {
-                setIsLoading(false)
-                // Display error message if fetching cart data fails
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Failed to fetch cart data.'
-                });
-            });
-    };
-    
-    // Function to handle updating quantity of items in the cart
-    const handleUpdateQuantity = (productId, newQuantity) => {
-        // Ensure quantity is not negative
-        newQuantity = parseInt(newQuantity) || 0;
-        if (newQuantity < 0) {
-            newQuantity = 0;
-        }
-    
-        // Update quantity on the server
-        fetch(`${process.env.REACT_APP_API_URL}/carts/update-cart-quantity`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify({
-                productId,
-                quantity: newQuantity
-            })
-        })
         .then(res => res.json())
         .then(data => {
-            if (data.message === 'Product quantity updated successfully') {
-                // If successful, fetch updated cart data
-                fetchCartData(); 
-                // Display success message
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Product quantity updated successfully.'
-                });
-            } else {
-                // Display error message if updating quantity fails
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Failed to update product quantity.'
-                });
-            }
+            // Update state with fetched cart data
+            setCart(data.cart);
+
+            // Log the cart items for debugging
+            console.log("Cart Items:", data.cart.cartItems);
+            
+            // Recalculate total price based on updated quantities
+            const totalPrice = data.cart.cartItems.reduce((total, item) => total + item.subtotal, 0);
+            setTotalPrice(totalPrice);
+            
+            setIsLoading(false);
         })
         .catch(err => {
+            setIsLoading(false);
+            // Display error message if fetching cart data fails
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to fetch cart data.'
+            });
+        });
+    };
+
+    
+   // Function to handle updating quantity of items in the cart
+   const handleUpdateQuantity = (productId, newQuantity) => {
+    const token = localStorage.getItem('token');
+    // Ensure quantity is not negative
+    newQuantity = parseInt(newQuantity) || 0;
+    if (newQuantity < 0) {
+        newQuantity = 0;
+    }
+
+    // Update quantity on the server
+    fetch(`${process.env.REACT_APP_API_URL}/carts/update-cart-quantity`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            productId,
+            quantity: newQuantity
+        })
+    })
+    .then(res => {
+        if (!res.ok) {
+            throw new Error('Failed to update product quantity.');
+        }
+        return res.json();
+    })
+    .then(data => {
+        if (data.message === 'Product quantity updated successfully') {
+            // If successful, fetch updated cart data
+            fetchCartData(); 
+            // Display success message
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Product quantity updated successfully.'
+            });
+        } else {
             // Display error message if updating quantity fails
-            console.error('Error updating product quantity:', err);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'Failed to update product quantity.'
             });
+        }
+    })
+    .catch(err => {
+        // Display error message if updating quantity fails
+        console.error('Error updating product quantity:', err);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to update product quantity.'
         });
-    };
-     
+    });
+};
+    
     // Function to handle removing an item from the cart
     const handleRemoveItem = (productId) => {
         // Remove item from the server
@@ -201,7 +213,7 @@ function Cart() {
                 throw new Error('Authentication token not found');
             }
     
-            const response = await fetch('http://ec2-18-217-154-136.us-east-2.compute.amazonaws.com/b5/orders/checkout', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/orders/checkout`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -271,6 +283,7 @@ function Cart() {
                                             onClick={() => handleUpdateQuantity(item.productId._id, item.quantity - 1)}>
                                             <AiOutlineMinus />
                                         </Button>
+
                                         <Button variant="outline-danger" style={{ backgroundColor: '#934647', borderColor: '#934647', color: 'white' }} onClick={() => handleRemoveItem(item.productId._id)}>
                                             <AiOutlineDelete />
                                         </Button>
