@@ -6,9 +6,12 @@ import UserContext from '../UserContext';
 import OrderHistory from './OrderHistory';
 
 export default function Account() {
+    // Accessing user context
     const { user } = useContext(UserContext);
+    // State variable to store user details
     const [details, setDetails] = useState({});
 
+    // Effect hook to fetch user details when component mounts
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}/users/details`, {
             headers: {
@@ -19,15 +22,18 @@ export default function Account() {
             .then(data => {
                 console.log(data);
 
+                // Check if user details are fetched successfully
                 if (typeof data.user._id !== "undefined") {
                     setDetails(data.user);
                 } else if (data.error === "User not found") {
+                    // Display error message if user not found
                     Swal.fire({
                         title: "User not found",
                         icon: "error",
                         text: "Something went wrong, kindly contact us for assistance."
                     });
                 } else {
+                    // Display error message for other errors
                     Swal.fire({
                         title: "Something went wrong",
                         icon: "error",
@@ -39,9 +45,11 @@ export default function Account() {
 
     return (
         <div className="account-container"> 
+            {/* Redirect to products page if user is not logged in */}
             {(user.id === null) ?
                 <Navigate to="/products" /> :
                 <>
+                    {/* Display account information */}
                     <Row>
                         <Col lg={4}>
                             <h1 className="my-5">My Account</h1>
@@ -55,12 +63,15 @@ export default function Account() {
                                 </div>
                             </div>
                             <div className="mt-5">
+                                {/* Link to reset password */}
                                 <Link to="/resetPassword" style={{ cursor: 'pointer', textDecoration: 'underline', color: 'black' }}>Reset Password</Link>
                             </div>
                             <div className="mt-3">
+                                {/* Link to update profile */}
                                 <Link to="/updateProfile" style={{ cursor: 'pointer', textDecoration: 'underline', color: 'black' }}>Update Profile</Link>
                             </div>
                         </Col>
+                        {/* Display order history */}
                         <Col lg={8}>
                             <OrderHistory />
                         </Col>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Carousel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+// Mapping of product names to their respective image URLs
 const imageMap = {
     'blk cosmetics brow stick: pencil + mascara': 'https://blkcosmetics.com.ph/cdn/shop/files/BrowSculptingPencilDuo_NaturalBrown_f1eb7405-701c-4a1e-8126-70eaac9d7038_720x.png?v=1691670903',
     'blk cosmetics powder multi palette - Blush': 'https://blkcosmetics.com.ph/cdn/shop/files/PowderPalette_BlushChampagneCaramel_720x.png?v=1691672016',
@@ -18,15 +19,18 @@ const imageMap = {
 };
 
 export default function FeaturedProducts() {
+    // State to store featured products
     const [featuredProducts, setFeaturedProducts] = useState([]);
 
     useEffect(() => {
+        // Fetching products from API and selecting 5 random featured products
         fetch(`${process.env.REACT_APP_API_URL}/products/`)
             .then(res => res.json())
             .then(data => {
                 const numbers = [];
                 const featured = [];
 
+                // Function to generate unique random numbers
                 const generateRandomNums = () => {
                     let randomNum = Math.floor(Math.random() * data.products.length);
 
@@ -37,22 +41,27 @@ export default function FeaturedProducts() {
                     }
                 };
 
+                // Generating 5 random featured products
                 for (let i = 0; i < 5; i++) {
                     generateRandomNums();
-
                     featured.push(data.products[numbers[i]]);
                 }
+                // Setting featured products state
                 setFeaturedProducts(featured);
             });
     }, []);
 
     return (
         <>
+            {/* Title for featured products */}
             <h2 className="text-center my-3">Our Best Sellers!</h2>
+            {/* Carousel for displaying featured products */}
             <Carousel>
                 {featuredProducts.map((product, index) => (
                     <Carousel.Item key={index}>
+                        {/* Link to individual product page */}
                         <Link to={`/products/${product._id}`}>
+                            {/* Image of the featured product */}
                             <img
                                 className="d-block w-100"
                                 src={imageMap[product.name]}

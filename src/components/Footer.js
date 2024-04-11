@@ -27,19 +27,23 @@ const Footer = () => {
   // Add scroll event listener when component mounts
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
+    // Remove scroll event listener when component unmounts
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
   return (
+    // Footer component with conditional className based on showFooter state
     <footer id="footer" className={`footer ${showFooter ? '' : 'hide'}`}>
       <div>
         <div className="row">
           <div className="col-md-6">
+            {/* Copyright information */}
             <p className='mx-3 my-3'>&copy; Glow Girl 2024 All rights reserved</p>
           </div>
           <div className="col-md-6">
+            {/* Social media icons */}
             <div className="social-icons my-3">
               <FaInstagram className="social-icon" />
               <FaFacebook className="social-icon" />

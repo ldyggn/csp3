@@ -4,6 +4,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import UserContext from '../UserContext';
 import Swal from 'sweetalert2';
 
+// Map of product names to their respective image URLs
 const imageMap = {
     'blk cosmetics brow stick: pencil + mascara': 'https://blkcosmetics.com.ph/cdn/shop/files/BrowSculptingPencilDuo_NaturalBrown_f1eb7405-701c-4a1e-8126-70eaac9d7038_720x.png?v=1691670903',
     'blk cosmetics powder multi palette - Blush': 'https://blkcosmetics.com.ph/cdn/shop/files/PowderPalette_BlushChampagneCaramel_720x.png?v=1691672016',
@@ -19,21 +20,28 @@ const imageMap = {
     'blk cosmetics life-proof airy serum foundation': 'https://blkcosmetics.com.ph/cdn/shop/files/AirySerumFoundation_Butterscotch_720x.png?v=1691671532'
 };
 
+// Component to display product details
 export default function ProductView() {
+    // Accessing user data from context
     const { user } = useContext(UserContext);
+    // Getting product ID from route parameters
     const { productId } = useParams();
+    // Navigation hook
     const navigate = useNavigate();
 
+    // State for storing product details
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState(0);
     const [quantity, setQuantity] = useState(1); 
     const [cart, setCart] = useState([]);
 
+    // Fetch product details on component mount
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}/products/${productId}`)
             .then(res => res.json())
             .then(data => {
+                // Update state with fetched product details
                 setName(data.product.name);
                 setDescription(data.product.description);
                 setPrice(data.product.price);
@@ -41,6 +49,7 @@ export default function ProductView() {
 
     }, [productId]);
 
+    // Function to add product to cart
     const addToCart = () => {
         fetch(`${process.env.REACT_APP_API_URL}/carts/add-to-cart`, {
             method: "POST",
@@ -55,6 +64,7 @@ export default function ProductView() {
         })
             .then(res => res.json())
             .then(data => {
+                // If product added to cart successfully, update cart state and show success message
                 if (data.message === 'Product added to cart successfully') {
                     setCart(data.cart.cartItems);
                     navigate("/cart");
@@ -66,6 +76,7 @@ export default function ProductView() {
                         timer: 1500
                     });
                 } else {
+                    // If adding product to cart fails, show error message
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
@@ -76,6 +87,7 @@ export default function ProductView() {
                 }
             })
             .catch(err => {
+                // If an error occurs during the fetch, show error message
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -86,6 +98,7 @@ export default function ProductView() {
             });
     };
     
+    // Get image path for the product
     const imagePath = imageMap[name] || ''; 
 
     return (
@@ -110,6 +123,7 @@ export default function ProductView() {
                                         onChange={(e) => setQuantity(parseInt(e.target.value))}
                                     />
                                 </Form.Group>
+                                {/* Render add to cart button if user is logged in, else render login link */}
                                 {user.id !== null ?
                                     <Button variant="primary" onClick={addToCart} className="my-3 add-to-cart-button"
                                      style={{ backgroundColor: '#f79191', borderColor: '#f79191' }}>Add to Cart</Button>

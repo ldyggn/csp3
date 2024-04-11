@@ -4,11 +4,14 @@ import UserContext from '../UserContext';
 import Swal from 'sweetalert2';
 import { useNavigate, Navigate, Link } from 'react-router-dom';
 
+// Component for user registration
 export default function Register() {
-
+ // Accessing user data from context
     const { user } = useContext(UserContext);
+ // Navigation hook
     const navigate = useNavigate();
 
+     // State variables for user registration form fields
     const [firstName,setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -16,9 +19,11 @@ export default function Register() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+     // Function to handle user registration
     function registerUser(e) {
         e.preventDefault();
 
+        // Validation checks for form fields
         if (!firstName || !lastName || !email || !mobileNo || !password || !confirmPassword) {
             Swal.fire('Error', 'Please fill in all fields', 'error');
             return;
@@ -29,6 +34,7 @@ export default function Register() {
             return;
         }
     
+        // Sending registration request to the server
         fetch(`${process.env.REACT_APP_API_URL}/users/`, {
             method: 'POST',
             headers: {
@@ -45,7 +51,11 @@ export default function Register() {
         .then(res => res.json())
         .then(data => {
             console.log(data);
+            
+            // Handling response from the server
             if(data.message === "Registered Successfully"){
+                  // Resetting form fields and showing success message on successful registration
+                setFirstName('');
                 setFirstName('');
                 setLastName('');
                 setEmail('');
@@ -72,12 +82,14 @@ export default function Register() {
     }
 
     return (
+        // If user is already logged in, redirect to products page
         (user.id !== null) ?
             <Navigate to="/products"/>
         :
         <div className="register-container">
         <Form className="register-form" onSubmit={(e) => registerUser(e)}>
             <h1 className="register-text">Register</h1>
+            {/* Form fields for user registration */}
                 <Form.Group>
                     <Form.Label className="register-text">First Name:</Form.Label>
                     <Form.Control 

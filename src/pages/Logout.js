@@ -1,22 +1,26 @@
-import { Navigate } from 'react-router-dom'
-import UserContext from '../UserContext'
+import { Navigate } from 'react-router-dom';
+import UserContext from '../UserContext';
 import { useContext, useEffect } from 'react';
 
+// Functional component for user logout
 export default function Logout() {
 
-	const { unsetUser, setUser } = useContext(UserContext);
+    // Access user context to manage user state
+    const { unsetUser, setUser } = useContext(UserContext);
 
-	unsetUser();
+    // Unset user state on logout
+    unsetUser();
 
-	useEffect(() => {
-		
-		setUser({
-			id: null,
-			isAdmin: null
-		})
-	}, [])
+    // Reset user state upon component mount
+    useEffect(() => {
+        setUser({
+            id: null,
+            isAdmin: null
+        });
+    }, []);
 
-	return (
-		<Navigate to='/login'/>
-	)
+    // Render redirection to login page after logout
+    return (
+        <Navigate to='/login'/>
+    );
 }

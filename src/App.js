@@ -18,7 +18,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Route, Routes } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { UserProvider } from './UserContext';
-import Footer from './components/Footer'; // Import Footer component
+import Footer from './components/Footer';
 
 function App() {
   const [user, setUser] = useState({

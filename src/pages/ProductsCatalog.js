@@ -6,18 +6,25 @@ import ProductSearch from '../components/ProductSearch';
 import { AiOutlineShoppingCart } from 'react-icons/ai'; 
 import { Link } from 'react-router-dom'; 
 
+// Component to display products catalog
 export default function ProductsCatalog() {
+    // Accessing user data from context
     const { user } = useContext(UserContext);
+    // State for storing all products and filtered products
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
+    // State for error handling
     const [error, setError] = useState(null);
 
+    // Function to fetch products data from the server
     const fetchData = useCallback(() => {
         setError(null);
+        // Determine the fetch URL based on user role
         const fetchUrl = user.isAdmin
             ? "http://ec2-18-217-154-136.us-east-2.compute.amazonaws.com/b5/products/all"
             : "http://ec2-18-217-154-136.us-east-2.compute.amazonaws.com/b5/products/";
 
+        // Fetch data from the server
         fetch(fetchUrl, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -30,6 +37,7 @@ export default function ProductsCatalog() {
             return res.json();
         })
         .then(data => {
+            // Update the products state with fetched data
             if (typeof data.message !== "string") {
                 setProducts(data.products);
                 setFilteredProducts(data.products);
@@ -39,14 +47,17 @@ export default function ProductsCatalog() {
             }
         })
         .catch(error => {
+            // Set error state if fetching fails
             setError(error);
         })
     }, [user.isAdmin]);
 
+    // Fetch data on component mount or when user role changes
     useEffect(() => {
         fetchData();
     }, [fetchData]);
     
+    // Function to handle search filtering
     const handleSearch = (searchTerm) => {
         const filtered = products.filter(product =>
             product.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -55,14 +66,17 @@ export default function ProductsCatalog() {
     };
 
     return (
-        <div style={{ marginBottom: '90px' }}> 
+        <div div className='productscatalog-container' style={{ marginBottom: '90px' }}> 
+            {/* Search bar and cart icon */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                 <div>
+                    {/* Display search bar if user is not admin */}
                     {!user.isAdmin && (
                         <ProductSearch searchResults={filteredProducts} onSearch={handleSearch} />
                     )}
                 </div>
                 <div>
+                    {/* Display cart icon if user is not admin */}
                     {!user.isAdmin && (
                         <Link to="/cart" style={{ fontSize: '24px', color: 'black' }}>
                             <AiOutlineShoppingCart />
@@ -70,8 +84,11 @@ export default function ProductsCatalog() {
                     )}
                 </div>
             </div>
+            {/* Display error message if there is an error */}
             {error && <div>Error: {error.message}</div>}
+            {/* Display products */}
             <div className="products-container" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+                {/* Render AdminView if user is admin, else render product cards */}
                 {user.isAdmin ? (
                     <AdminView productsData={filteredProducts} fetchData={fetchData} />
                 ) : (
