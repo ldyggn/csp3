@@ -18,7 +18,7 @@ function Cart() {
 
     // Function to fetch cart data from the server
     const fetchCartData = () => {
-        setIsLoading(true);
+        setIsLoading(true)
         fetch(`${process.env.REACT_APP_API_URL}/carts/get-cart`, {
             method: "GET",
             headers: {
@@ -26,34 +26,28 @@ function Cart() {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         })
-        .then(res => res.json())
-        .then(data => {
-            // Update state with fetched cart data
-            setCart(data.cart);
-
-            // Log the cart items for debugging
-            console.log("Cart Items:", data.cart.cartItems);
-            
-            // Recalculate total price based on updated quantities
-            const totalPrice = data.cart.cartItems.reduce((total, item) => total + item.subtotal, 0);
-            setTotalPrice(totalPrice);
-            
-            setIsLoading(false);
-        })
-        .catch(err => {
-            setIsLoading(false);
-            // Display error message if fetching cart data fails
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Failed to fetch cart data.'
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                // Update state with fetched cart data and calculate total price
+                setCart(data.cart);
+                const totalPrice = data.cart.cartItems.reduce((total, item) => total + item.subtotal, 0);
+                setTotalPrice(totalPrice);
+                setIsLoading(false);
+            })
+            .catch(err => {
+                setIsLoading(false)
+                // Display error message if fetching cart data fails
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to fetch cart data.'
+                });
             });
-        });
     };
 
-    
    // Function to handle updating quantity of items in the cart
-   const handleUpdateQuantity = (productId, newQuantity) => {
+const handleUpdateQuantity = (productId, newQuantity) => {
     const token = localStorage.getItem('token');
     // Ensure quantity is not negative
     newQuantity = parseInt(newQuantity) || 0;
@@ -81,8 +75,19 @@ function Cart() {
     })
     .then(data => {
         if (data.message === 'Product quantity updated successfully') {
-            // If successful, fetch updated cart data
-            fetchCartData(); 
+            // If successful, update the quantity in the cart state
+            const updatedCart = { ...cart };
+            const updatedItemIndex = updatedCart.cartItems.findIndex(item => item.productId._id === productId);
+            if (updatedItemIndex !== -1) {
+                updatedCart.cartItems[updatedItemIndex].quantity = newQuantity;
+                // Calculate the new subtotal for the updated item
+                updatedCart.cartItems[updatedItemIndex].subtotal = newQuantity * updatedCart.cartItems[updatedItemIndex].productId.price;
+                // Update the cart state
+                setCart(updatedCart);
+                // Recalculate total price
+                const totalPrice = updatedCart.cartItems.reduce((total, item) => total + item.subtotal, 0);
+                setTotalPrice(totalPrice);
+            }
             // Display success message
             Swal.fire({
                 icon: 'success',
