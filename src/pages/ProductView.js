@@ -103,14 +103,14 @@ export default function ProductView() {
 
     return (
         <div className='productview-container'>
-            <Container className="mt-5">
-                <Row className="justify-content-center">
-                    <Col lg={6} className="d-flex justify-content-center">
-                        <Card className="product-card text-center" style={{ width: '100%', maxWidth: '400px', padding: '20px', border: '1px solid #ccc', borderRadius: '5px', backgroundColor: 'white', color: '#934647' }}>
-                            <div className="product-card-image-container">
+            <Row className="justify-content-center">
+                <Col lg={8} className="d-flex justify-content-center">
+                    <Card className="product-card text-center" style={{ width: '100%', maxWidth: '900px', padding: '20px', border: '1px solid #ccc', borderRadius: '5px', backgroundColor: 'white', color: '#934647' }}>
+                        <Card.Body className="d-flex">
+                            <div className="product-card-image-container" style={{ marginRight: '20px' }}>
                                 <Card.Img variant="top" src={imagePath} alt={name} className="product-card-image" />
                             </div>
-                            <Card.Body>
+                            <div>
                                 <Card.Title style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{name}</Card.Title>
                                 <Card.Text style={{ marginBottom: '1rem' }}>{description}</Card.Text>
                                 <Card.Text style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>₱ {price}</Card.Text>
@@ -130,11 +130,11 @@ export default function ProductView() {
                                     :
                                     <Link className="btn btn-danger btn-block my-3" to="/login">Log in to shop</Link>
                                 }
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-            </Container>
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
         </div>
     );
 }

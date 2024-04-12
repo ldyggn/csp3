@@ -71,7 +71,7 @@ export default function EditProduct({ product, fetchData }) {
     return (
         <>
             {/* Button to open edit modal */}
-            <Button variant="success" size="sm" onClick={() => openEdit(product)}>Edit</Button>
+            <Button style={{ marginLeft: '10px', backgroundColor: '#f79191', color: 'white', borderColor: '#f79191' }} size="sm" onClick={() => openEdit(product)}>Edit</Button>
             {/* Edit product modal */}
             <Modal show={showEdit} onHide={closeEdit}>
                 <Form onSubmit={e => editProduct(e, productId)}>

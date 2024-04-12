@@ -196,36 +196,31 @@
   text-align: center;
   margin-top: 2rem;
   margin-bottom: 2rem;
-  color: var(--accent-color);
 }
 
 .admin-table {
-  color: var(--accent-color);
   width: 100%;
 }
 
-.text-success {
-  color: green;
-}
-
-.text-danger {
-  color: red;
-}
 
 /* Responsive design */
-@media screen and (max-width: 992px) {
-  .admin-table {
-    font-size: 0.8rem;
-  }
-
-  .table-cell {
-    padding: 6px; 
-  }
-}
-
 @media screen and (max-width: 576px) {
-  .admin-dashboard {
-    padding: 0 15px;
+  .admin-table tbody,
+  .admin-table thead {
+    display: block;
+    width: 100%;
+  }
+
+  .admin-table tr {
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+  }
+
+  .admin-table th,
+  .admin-table td {
+    flex-basis: 100%; 
+    text-align: center;
   }
 }
 
@@ -343,6 +338,9 @@
 .productview-container {
   min-height: 100vh; 
   position: relative; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .cart-container {
@@ -396,5 +394,5 @@
   text-align: center;
   margin-top: 2rem;
   margin-bottom: 2rem;
-  color: var(--accent-color);
 }
+

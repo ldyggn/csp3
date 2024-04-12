@@ -66,10 +66,10 @@ function OrderHistory() {
                     <Table striped bordered hover>
                         <thead>
                             <tr>
-                                <th>Order ID</th>
-                                <th>Ordered On</th>
-                                <th>Products</th>
-                                <th>Total Price</th>
+                            <th style={{ verticalAlign: 'middle' }}>Order ID</th>
+                                <th style={{ verticalAlign: 'middle' }}>Ordered On</th>
+                                <th style={{ verticalAlign: 'middle' }}>Products</th>
+                                <th style={{ verticalAlign: 'middle' }}>Total Price</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -73,9 +73,9 @@ export default function ArchiveProduct({ product, isActive, fetchData }) {
         <>
             {/* Conditional rendering of archive/activate button based on product's isActive status */}
             {isActive ? (
-                <Button variant="danger" size="sm" onClick={() => archiveToggle(product)}>Archive</Button>
+                <Button style={{ marginLeft: '10px', backgroundColor: '#934647', color: 'white', borderColor: '#934647' }} size="sm" onClick={() => archiveToggle(product)}>Archive</Button>
             ) : (
-                <Button variant="success" size="sm" onClick={() => activateToggle(product)}>Activate</Button>
+                <Button style={{ marginLeft: '10px', backgroundColor: '#f79191', color: 'white', borderColor: '#f79191' }} size="sm" onClick={() => activateToggle(product)}>Activate</Button>
             )}
         </>
     );

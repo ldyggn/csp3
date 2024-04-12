@@ -261,7 +261,7 @@ function Cart() {
             <Row className="justify-content-center">
                 {isLoading? <p>Loading</p>:
                 <Col lg={8}>
-                    <h2>Your Cart</h2>
+                    <h2 className='mb-3'>Your Cart</h2>
                     {cart?.cartItems?.length === 0 ? (
                         <div>
                             <p>Your cart is empty.</p>
@@ -297,11 +297,11 @@ function Cart() {
                             ))}
                             <p>Total Price: {totalPrice}</p>
                             {/* Buttons to checkout and clear cart */}
-                            <Button variant="success" onClick={handleCheckout}>
+                            <Button style={{backgroundColor: '#934647', borderColor: '#934647', color: 'white' }} onClick={handleCheckout}>
                                 Checkout
                             </Button>
-                            <Button variant="primary" onClick={() => navigate("/products")} style={{ marginLeft: '5px', backgroundColor: '#f79191', color: 'white', borderColor: '#f79191' }}>Add More Item/s</Button>
-                            <Button variant="danger" onClick={handleClearCart} style={{ marginLeft: '5px' }}>
+                            <Button onClick={() => navigate("/products")} style={{ marginLeft: '10px', backgroundColor: '#934647', color: 'white', borderColor: '#934647' }}>Add More Item/s</Button>
+                            <Button onClick={handleClearCart} style={{ marginLeft: '10px', backgroundColor: '#934647', color: 'white', borderColor: '#934647' }}>
                                 Clear Cart
                             </Button>
                         </div>
