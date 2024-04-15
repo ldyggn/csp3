@@ -36,9 +36,9 @@ function OrderHistory() {
             let url;
             // Determine URL based on user's role
             if (user && user.isAdmin) {
-                url = `${process.env.REACT_APP_API_URL}/orders/all-orders`;
+                url = `${process.env.REACT_APP_API_BASE_URL}/orders/all-orders`;
             } else {
-                url = `${process.env.REACT_APP_API_URL}/orders/my-orders`;
+                url = `${process.env.REACT_APP_API_BASE_URL}/orders/my-orders`;
             }
     
             const response = await fetch(url, {

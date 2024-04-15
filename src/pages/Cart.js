@@ -23,7 +23,7 @@ function Cart() {
  // Function to fetch cart data from the server
  const fetchCartData = () => {
     setIsLoading(true)
-    fetch(`${process.env.REACT_APP_API_URL}/carts/get-cart`, {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/carts/get-cart`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -60,7 +60,7 @@ function Cart() {
         }
 
         // Update quantity on the server
-        fetch(`${process.env.REACT_APP_API_URL}/carts/update-cart-quantity`, {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/carts/update-cart-quantity`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -122,7 +122,7 @@ function Cart() {
     // Function to handle removing an item from the cart
     const handleRemoveItem = (productId) => {
         // Remove item from the server
-        fetch(`${process.env.REACT_APP_API_URL}/carts/${productId}/remove-from-cart`, {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/carts/${productId}/remove-from-cart`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -175,7 +175,7 @@ function Cart() {
     // Function to clear the entire cart
     const handleClearCart = () => {
         // Clear cart on the server
-        fetch(`${process.env.REACT_APP_API_URL}/carts/clear-cart`, {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/carts/clear-cart`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -223,7 +223,7 @@ function Cart() {
                 throw new Error('Authentication token not found');
             }
     
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/orders/checkout`, {
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/orders/checkout`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

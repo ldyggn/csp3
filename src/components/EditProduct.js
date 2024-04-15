@@ -12,7 +12,7 @@ export default function EditProduct({ product, fetchData }) {
 
     // Function to open the edit modal and fetch product data
     const openEdit = (productId) => {
-        fetch(`${process.env.REACT_APP_API_URL}/products/${productId}`)
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/products/${productId}`)
             .then(res => res.json())
             .then(data => {
                 setProductId(data.product._id);
@@ -34,7 +34,7 @@ export default function EditProduct({ product, fetchData }) {
     // Function to submit edited product data
     const editProduct = (e, productId) => {
         e.preventDefault();
-        fetch(`${process.env.REACT_APP_API_URL}/products/${productId}/update`, {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/products/${productId}/update`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

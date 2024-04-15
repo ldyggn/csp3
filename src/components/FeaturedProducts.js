@@ -24,7 +24,7 @@ export default function FeaturedProducts() {
 
     useEffect(() => {
         // Fetching products from API and selecting 5 random featured products
-        fetch(`${process.env.REACT_APP_API_URL}/products/`)
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/products/`)
             .then(res => res.json())
             .then(data => {
                 const numbers = [];

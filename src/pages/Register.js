@@ -35,7 +35,7 @@ export default function Register() {
         }
     
         // Sending registration request to the server
-        fetch(`${process.env.REACT_APP_API_URL}/users/`, {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/users/`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"

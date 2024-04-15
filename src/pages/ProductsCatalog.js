@@ -21,8 +21,9 @@ export default function ProductsCatalog() {
         setError(null);
         // Determine the fetch URL based on user role
         const fetchUrl = user.isAdmin
-            ? "http://ec2-18-217-154-136.us-east-2.compute.amazonaws.com/b5/products/all"
-            : "http://ec2-18-217-154-136.us-east-2.compute.amazonaws.com/b5/products/";
+    ? `${process.env.REACT_APP_API_BASE_URL}/products/all`
+    : `${process.env.REACT_APP_API_BASE_URL}/products/`;
+
 
         // Fetch data from the server
         fetch(fetchUrl, {

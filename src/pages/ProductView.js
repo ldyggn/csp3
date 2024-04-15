@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { Container, Card, Button, Row, Col, Form } from 'react-bootstrap';
+import {  Card, Button, Row, Col, Form } from 'react-bootstrap';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import UserContext from '../UserContext';
 import Swal from 'sweetalert2';
@@ -38,7 +38,7 @@ export default function ProductView() {
 
     // Fetch product details on component mount
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}/products/${productId}`)
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/products/${productId}`)
             .then(res => res.json())
             .then(data => {
                 // Update state with fetched product details
@@ -51,7 +51,7 @@ export default function ProductView() {
 
     // Function to add product to cart
     const addToCart = () => {
-        fetch(`${process.env.REACT_APP_API_URL}/carts/add-to-cart`, {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/carts/add-to-cart`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
