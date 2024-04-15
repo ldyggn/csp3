@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import Swal from 'sweetalert2';
 
 // Component for updating user profile
@@ -7,11 +8,12 @@ const UpdateProfile = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [mobileNo, setMobileNo] = useState('');
+  const navigate = useNavigate(); 
 
   // Function to handle profile update
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
-
+  
     try {
       // Fetching token from local storage
       const token = localStorage.getItem('token');
@@ -24,15 +26,19 @@ const UpdateProfile = () => {
         },
         body: JSON.stringify({ firstName, lastName, mobileNo }),
       });
-
+  
       if (response.ok) {
         // Display success message on successful profile update
         Swal.fire({
           title: 'Success',
           text: 'Profile updated successfully',
           icon: 'success',
-          onClose: () => window.location.reload(),
+          showConfirmButton: false,
+          timer: 1000, 
         });
+        setTimeout(() => {
+          navigate('/account');
+        }, 1000);
       } else {
         // Handling error response from the server
         const errorData = await response.json();
@@ -52,7 +58,7 @@ const UpdateProfile = () => {
       console.error(error);
     }
   };
-
+  
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <div style={{ width: '100%', maxWidth: '400px', padding: '20px', border: '1px solid #ccc', borderRadius: '5px', backgroundColor: 'white', color: '#934647' }}>

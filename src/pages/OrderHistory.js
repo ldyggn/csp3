@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Container, Table } from 'react-bootstrap';
+import { Container, Table, Row, Col } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import UserContext from '../UserContext';
 
@@ -10,11 +10,25 @@ function OrderHistory() {
     // State to store orders and error
     const [orders, setOrders] = useState([]);
     const [error, setError] = useState(null);
+    const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+    useEffect(() => {
+        // Check if screen size is small
+        const handleResize = () => {
+            setIsSmallScreen(window.innerWidth < 768); 
+        };
+
+        handleResize(); // Initial check
+        window.addEventListener('resize', handleResize); 
+
+        return () => window.removeEventListener('resize', handleResize); 
+
+    }, []);
 
     // Fetch orders on component mount or when user changes
     useEffect(() => {
         fetchOrders();
-    }, [user]);
+    }, []);
 
     // Function to fetch order
     const fetchOrders = async () => {
@@ -72,9 +86,6 @@ function OrderHistory() {
         }
     };
     
-    
-
-
     // Function to format products and quantities
     const formatProducts = (productsOrdered) => {
         return productsOrdered.map(item => `${item.productName} (${item.quantity})`).join(', ');
@@ -91,28 +102,45 @@ function OrderHistory() {
             {orders.length === 0 ? (
                 <p>No orders found.</p>
             ) : (
-                <div className="table-responsive">
-                    <Table striped bordered hover>
-                        <thead>
-                            <tr>
-                                <th style={{ verticalAlign: 'middle' }}>Order ID</th>
-                                <th style={{ verticalAlign: 'middle' }}>Ordered On</th>
-                                <th style={{ verticalAlign: 'middle' }}>Products</th>
-                                <th style={{ verticalAlign: 'middle' }}>Total Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {orders.map(order => (
-                                <tr key={order._id}>
-                                    <td>{order._id}</td>
-                                    <td>{new Date(order.orderedOn).toLocaleString()}</td>
-                                    <td>{formatProducts(order.productsOrdered)}</td>
-                                    <td>₱{order.totalPrice.toFixed(2)}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
-                </div>
+                <>
+                    {isSmallScreen ? (
+                        // Render vertical layout for smaller screens
+                        orders.map(order => (
+                            <div key={order._id} className="order-details">
+                                <p><strong>Order ID:</strong> {order._id}</p>
+                                <p><strong>Ordered On:</strong> {new Date(order.orderedOn).toLocaleString()}</p>
+                                <p><strong>Products:</strong> {formatProducts(order.productsOrdered)}</p>
+                                <p><strong>Total Price:</strong> ₱{order.totalPrice.toFixed(2)}</p>
+                            </div>
+                        ))
+                    ) : (
+                        // Render table layout for larger screens
+                        <Row>
+                            <Col>
+                                <Table striped bordered hover responsive>
+                                    <thead>
+                                        <tr>
+                                            <th style={{ verticalAlign: 'middle' }}>Order ID</th>
+                                            <th style={{ verticalAlign: 'middle' }}>Ordered On</th>
+                                            <th style={{ verticalAlign: 'middle' }}>Products</th>
+                                            <th style={{ verticalAlign: 'middle' }}>Total Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {orders.map(order => (
+                                            <tr key={order._id}>
+                                                <td>{order._id}</td>
+                                                <td>{new Date(order.orderedOn).toLocaleString()}</td>
+                                                <td>{formatProducts(order.productsOrdered)}</td>
+                                                <td>₱{order.totalPrice.toFixed(2)}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </Table>
+                            </Col>
+                        </Row>
+                    )}
+                </>
             )}
         </Container>
     );

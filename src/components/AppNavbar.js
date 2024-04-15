@@ -4,6 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import { Link, NavLink } from 'react-router-dom';
 import UserContext from '../UserContext';
+import logo from '../images/Glow Girl.svg';
 
 export default function AppNavbar() {
   // Accessing user context
@@ -15,7 +16,9 @@ export default function AppNavbar() {
       {/* Container for navbar content */}
       <Container fluid className="navbar-container"> 
         {/* Brand/logo */}
-        <Navbar.Brand as={Link} to="/">Glow Girl</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">
+          <img src={logo} alt="Glow Girl Logo" style={{ width: '50px', height: '50px' }} />
+        </Navbar.Brand>
         {/* Navbar toggle button */}
         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
         {/* Navbar content */}

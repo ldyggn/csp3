@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom'; 
 
 // Component for resetting password
 const ResetPassword = () => {
@@ -7,6 +8,7 @@ const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate(); 
 
   // Function to handle password reset
   const handleResetPassword = async (e) => {
@@ -31,13 +33,18 @@ const ResetPassword = () => {
         body: JSON.stringify({ newPassword: password }),
       });
 
-      if (response.ok) {
-        // Display success message on successful password reset
+      if (response.ok) { 
         Swal.fire({
           title: 'Success',
           text: 'Password reset successfully',
           icon: 'success',
+          showConfirmButton: false,
+          timer: 1000,
         });
+        setTimeout(() => {
+          navigate('/account');
+        }, 1000);
+        
         // Clearing password fields
         setPassword('');
         setConfirmPassword('');
