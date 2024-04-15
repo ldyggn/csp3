@@ -123,7 +123,7 @@ export default function Register() {
                 <Form.Group>
                     <Form.Label className="register-text">Mobile No:</Form.Label>
                     <Form.Control 
-                        type="number" 
+                        type="tel" 
                         placeholder="Enter 11 Digit No." 
                         required
                         value={mobileNo}

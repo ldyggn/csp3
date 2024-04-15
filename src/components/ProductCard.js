@@ -46,7 +46,7 @@ const ProductCard = ({ productProp }) => {
                     to={`/products/${_id}`}
                     style={{ backgroundColor: '#f79191', borderColor: '#f79191' }}
                 >
-                    Details
+                   View
                 </Link>
             </Card.Body>
         </Card>

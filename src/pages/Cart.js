@@ -12,42 +12,46 @@ function Cart() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Fetch cart data when component mounts
-        fetchCartData();
+        const token = localStorage.getItem('token');
+        if (token) {
+            fetchCartData();
+        } else {
+            setIsLoading(false);
+        }
     }, []);
-
-    // Function to fetch cart data from the server
-    const fetchCartData = () => {
-        setIsLoading(true)
-        fetch(`${process.env.REACT_APP_API_URL}/carts/get-cart`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
+    
+ // Function to fetch cart data from the server
+ const fetchCartData = () => {
+    setIsLoading(true)
+    fetch(`${process.env.REACT_APP_API_URL}/carts/get-cart`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            // Update state with fetched cart data and calculate total price
+            setCart(data.cart);
+            const totalPrice = data.cart.cartItems.reduce((total, item) => total + item.subtotal, 0);
+            setTotalPrice(totalPrice);
+            setIsLoading(false);
         })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                // Update state with fetched cart data and calculate total price
-                setCart(data.cart);
-                const totalPrice = data.cart.cartItems.reduce((total, item) => total + item.subtotal, 0);
-                setTotalPrice(totalPrice);
-                setIsLoading(false);
-            })
-            .catch(err => {
-                setIsLoading(false)
-                // Display error message if fetching cart data fails
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Failed to fetch cart data.'
-                });
+        .catch(err => {
+            setIsLoading(false)
+            // Display error message if fetching cart data fails
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to fetch cart data.'
             });
-    };
+        });
+};
 
-    // Function to handle updating quantity of items in the cart
-    const handleUpdateQuantity = (productId, newQuantity) => {
+     // Function to handle updating quantity of items in the cart
+     const handleUpdateQuantity = (productId, newQuantity) => {
         const token = localStorage.getItem('token');
         // Ensure quantity is not negative
         newQuantity = parseInt(newQuantity) || 0;
@@ -113,6 +117,7 @@ function Cart() {
             });
         });
     };
+
     
     // Function to handle removing an item from the cart
     const handleRemoveItem = (productId) => {
@@ -268,8 +273,8 @@ function Cart() {
                             <Button variant="primary" onClick={() => navigate("/products")} style={{ marginBottom: '10px', backgroundColor: '#f79191', color: 'white', borderColor: '#f79191' }}>Add Item/s</Button>
                         </div>
                     ) : (
-                        <div>
-                        {cart.cartItems.map(item => (
+                                                    <div>
+                                                    {cart && cart.cartItems && cart.cartItems.map(item => (
                                 <Card key={item._id} className="mb-3">
                                     <Card.Body>
                                         <Card.Title>{item.productId ? item.productId.name : 'Product Name Not Available'}</Card.Title>

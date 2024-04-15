@@ -37,7 +37,10 @@ export default function Login() {
                 Swal.fire({
                     title: "Login Successful",
                     icon: "success",
-                    text: "Welcome to Makeup Fever!"
+                    text: "Welcome to Makeup Fever!",
+                    timer: 1000, 
+                    timerProgressBar: true, 
+                    showConfirmButton: false 
                 });
             } else {
                 Swal.fire({
