@@ -34,7 +34,7 @@ export default function ProductView() {
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState(0);
     const [quantity, setQuantity] = useState(1); 
-    const [setCart] = useState([]);
+    const [cart, setCart] = useState([]);
 
     // Fetch product details on component mount
     useEffect(() => {
