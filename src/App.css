@@ -5,9 +5,9 @@
 }
 
 :root {
-  --primary-color: #f79191;
-  --secondary-color: #fcd6d6;
-  --accent-color: #934647;
+  --primary-color: #985F4B;
+  --secondary-color: #BA8788;
+  --accent-color: #E3D5D1;
 
   --bs-primary: var(--primary-color);
   --bs-secondary: var(--secondary-color);
@@ -37,7 +37,7 @@
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  color: #934647;
+  color: #985F4B;
 }
 
 .register-text {
@@ -55,8 +55,8 @@
 }
 
 .register-button:hover {
-  background-color: #f79191; 
-  border-color: #f79191;
+  background-color: #985F4B; 
+  border-color: #985F4B;
 }
 
 /* Login Styles */
@@ -78,7 +78,7 @@
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  color: #934647;
+  color: #985F4B;
 }
 
 .login-button {
@@ -156,7 +156,7 @@
 .banner-button {
   display: inline-block;
   padding: 10px 30px; 
-  background-color: #ff5e63;
+  background-color: #985F4B;
   color: #fff;
   text-decoration: none;
   border-radius: 25px; 
@@ -165,7 +165,7 @@
 }
 
 .banner-button:hover {
-  background-color: #d83a3f;
+  background-color: #985F4B;
 }
 
 /* Media Queries */

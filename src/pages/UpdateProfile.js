@@ -61,7 +61,7 @@ const UpdateProfile = () => {
   
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <div style={{ width: '100%', maxWidth: '400px', padding: '20px', border: '1px solid #ccc', borderRadius: '5px', backgroundColor: 'white', color: '#934647' }}>
+      <div style={{ width: '100%', maxWidth: '400px', padding: '20px', border: '1px solid #ccc', borderRadius: '5px', backgroundColor: 'white', color: '#985F4B' }}>
         <h2 style={{ marginBottom: '20px' }}>Update Profile</h2>
         <form onSubmit={handleUpdateProfile}>
           {/* Input field for first name */}

@@ -270,7 +270,7 @@ function Cart() {
                     {cart?.cartItems?.length === 0 ? (
                         <div>
                             <p>Your cart is empty.</p>
-                            <Button variant="primary" onClick={() => navigate("/products")} style={{ marginBottom: '10px', backgroundColor: '#f79191', color: 'white', borderColor: '#f79191' }}>Add Item/s</Button>
+                            <Button variant="primary" onClick={() => navigate("/products")} style={{ marginBottom: '10px', backgroundColor: '#985F4B', color: 'white', borderColor: '#985F4B' }}>Add Item/s</Button>
                         </div>
                     ) : (
                                                     <div>
@@ -283,18 +283,18 @@ function Cart() {
                                         {/* Buttons to update quantity, remove item, and clear cart */}
                                         <Button
                                             variant="outline-primary"
-                                            style={{ marginRight: '5px', backgroundColor: '#934647', borderColor: '#934647', color: 'white' }}
+                                            style={{ marginRight: '5px', backgroundColor: '#985F4B', borderColor: '#985F4B', color: 'white' }}
                                             onClick={() => handleUpdateQuantity(item.productId._id, item.quantity + 1)}>
                                             <AiOutlinePlus />
                                         </Button>
                                         <Button
                                             variant="outline-danger"
-                                            style={{ marginRight: '5px', backgroundColor: '#934647', borderColor: '#934647', color: 'white' }}
+                                            style={{ marginRight: '5px', backgroundColor: '#985F4B', borderColor: '#985F4B', color: 'white' }}
                                             onClick={() => handleUpdateQuantity(item.productId._id, item.quantity - 1)}>
                                             <AiOutlineMinus />
                                         </Button>
 
-                                        <Button variant="outline-danger" style={{ backgroundColor: '#934647', borderColor: '#934647', color: 'white' }} onClick={() => handleRemoveItem(item.productId._id)}>
+                                        <Button variant="outline-danger" style={{ backgroundColor: '#985F4B', borderColor: '#985F4B', color: 'white' }} onClick={() => handleRemoveItem(item.productId._id)}>
                                             <AiOutlineDelete />
                                         </Button>
                                     </Card.Body>
@@ -302,11 +302,11 @@ function Cart() {
                             ))}
                             <p>Total Price: {totalPrice}</p>
                             {/* Buttons to checkout and clear cart */}
-                            <Button style={{backgroundColor: '#934647', borderColor: '#934647', color: 'white' }} onClick={handleCheckout}>
+                            <Button style={{backgroundColor: '#985F4B', borderColor: '#985F4B', color: 'white' }} onClick={handleCheckout}>
                                 Checkout
                             </Button>
-                            <Button onClick={() => navigate("/products")} style={{ marginLeft: '10px', backgroundColor: '#934647', color: 'white', borderColor: '#934647' }}>Add More Item/s</Button>
-                            <Button onClick={handleClearCart} style={{ marginLeft: '10px', backgroundColor: '#934647', color: 'white', borderColor: '#934647' }}>
+                            <Button onClick={() => navigate("/products")} style={{ marginLeft: '10px', backgroundColor: '#985F4B', color: 'white', borderColor: '#985F4B' }}>Add More Item/s</Button>
+                            <Button onClick={handleClearCart} style={{ marginLeft: '10px', backgroundColor: '#985F4B', color: 'white', borderColor: '#985F4B' }}>
                                 Clear Cart
                             </Button>
                         </div>

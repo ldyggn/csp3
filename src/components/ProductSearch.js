@@ -64,7 +64,7 @@ const ProductSearch = ({ products, onSearch }) => {
           />
           {/* Search button */}
           <div className="input-group-append">
-            <button className="btn" type="button" onClick={handleSearch} style={{ backgroundColor: '#f79191', border: 'none' }}>
+            <button className="btn" type="button" onClick={handleSearch} style={{ backgroundColor: '#985F4B', border: 'none' }}>
               <AiOutlineSearch style={{ color: 'white' }} />
             </button>
           </div>
